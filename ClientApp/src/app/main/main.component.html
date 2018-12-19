@@ -13,6 +13,17 @@
           <th>Action</th>
         </tr>
       </thead>
+      <tbody>
+        <tr *ngFor="let employee of employees">
+          <td>{{ employee.id }}</td>
+          <td>{{ employee.lastname }}</td>
+          <td>{{ employee.firstname }}</td>
+          <td>{{ employee.middlename }}</td>
+          <td>
+            <button type="button" class="btn btn-link">View</button>||<button type="button" class="btn btn-link">Delete</button>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>
