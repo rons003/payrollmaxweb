@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Employee } from '../model/employee.model';
+import { Service, Employee } from '../core/services/api.client.generated';
 
 @Component({
   selector: 'app-main',
@@ -11,10 +10,10 @@ export class MainComponent implements OnInit {
 
   private employees: Employee[];
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<Employee[]>(baseUrl + 'api/Employee').subscribe(result => {
-      this.employees = result;
-    }, error => console.error(error));
+  constructor(private apiService: Service) {
+    apiService.getEmployeeAll().subscribe(response => {
+      this.employees = response;
+    });
   }
 
   ngOnInit() {

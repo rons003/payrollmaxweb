@@ -12,6 +12,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './main/main.component';
+import { Service } from './core/services/api.client.generated';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { MainComponent } from './main/main.component';
     ]),
     AppRoutingModule
   ],
-  providers: [],
+  providers: [Service],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
