@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Microsoft.AspNetCore.Identity;
+
 namespace payroll.Models
 {
     public partial class AspNetUsers

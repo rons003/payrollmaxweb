@@ -13,9 +13,23 @@ export const navItems = [
     name: 'Employee Management'
   },
   {
-    name: 'List of Employee',
+    name: 'Employee Setup',
     url: '/employee',
     icon: 'fa fa-users'
+  },
+  {
+    name: 'Employee Loans',
+    url: '/employee',
+    icon: 'fa fa-folder'
+  },
+  {
+    title: true,
+    name: 'Account Management'
+  },
+  {
+    name: 'Accounts',
+    url: '/employee',
+    icon: 'fa fa-lock'
   }
   // {
   //   title: true,
