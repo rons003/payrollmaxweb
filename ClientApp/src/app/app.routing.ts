@@ -79,6 +79,10 @@ export const routes: Routes = [
         loadChildren: './views/theme/theme.module#ThemeModule'
       },
       {
+        path: 'employee',
+        loadChildren: './views/employee/employee.module#EmployeeModule'
+      },
+      {
         path: 'widgets',
         loadChildren: './views/widgets/widgets.module#WidgetsModule'
       }
