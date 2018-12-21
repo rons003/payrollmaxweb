@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Service, Employee } from '../../core/services/api.client.generated';
 
 @Component({
-  templateUrl: './employee.component.html',
-  styleUrls: ['./employee.component.css']
+  templateUrl: './employee.component.html'
+  // styleUrls: ['./employee.component.css']
 })
 export class EmployeeComponent implements OnInit {
 
+  public primaryModal;
   private employees: Employee[];
 
   constructor(private apiService: Service) {

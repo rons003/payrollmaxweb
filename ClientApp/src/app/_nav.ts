@@ -180,7 +180,7 @@ export const navItems = [
   //       icon: 'icon-bell'
   //     }
   //   ]
-  // },
+  // }
   // {
   //   name: 'Widgets',
   //   url: '/widgets',
