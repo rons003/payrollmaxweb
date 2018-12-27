@@ -15,12 +15,12 @@ export const navItems = [
   {
     name: 'Employee Setup',
     url: '/employee',
-    icon: 'fa fa-users'
+    icon: 'icon-people'
   },
   {
     name: 'Employee Loans',
     url: '/employee',
-    icon: 'fa fa-folder'
+    icon: 'icon-folder'
   },
   {
     title: true,
