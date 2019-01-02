@@ -24,7 +24,7 @@ namespace payroll.Controllers
 
         // POST api/accounts
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]RegistrationViewModel model)
+        public async Task<IActionResult> Register([FromBody]RegistrationViewModel model)
         {
             if (!ModelState.IsValid)
             {
