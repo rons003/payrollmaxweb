@@ -13,6 +13,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     EmployeeRoutingModule,
     ModalModule.forRoot()
   ],
-  declarations: [ EmployeeComponent ]
+  declarations: [EmployeeComponent]
 })
 export class EmployeeModule { }

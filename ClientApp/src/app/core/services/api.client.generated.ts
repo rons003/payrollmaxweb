@@ -7,7 +7,7 @@
 // ReSharper disable InconsistentNaming
 
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
-import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
+import { Observable, throwError as _observableThrow, of as _observableOf, BehaviorSubject } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
@@ -19,9 +19,30 @@ export class Service {
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
+    // Observable navItem source
+    private _authNavStatusSource = new BehaviorSubject<boolean>(false);
+    // Observable navItem stream
+    authNavStatus$ = this._authNavStatusSource.asObservable();
+
+    private loggedIn = false;
+
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    getAuthorizationToken() {
+        return "Bearer " + localStorage.getItem('auth_token');
+    }
+
+    logout() {
+        localStorage.removeItem('auth_token');
+        this.loggedIn = false;
+        this._authNavStatusSource.next(false);
+    }
+
+    isLoggedIn() {
+        return this.loggedIn;
     }
 
     /**
@@ -80,7 +101,7 @@ export class Service {
      * @param credentials (optional) 
      * @return Success
      */
-    login(credentials: CredentialsViewModel | null | undefined): Observable<void> {
+    login(credentials: CredentialsViewModel | null | undefined): Observable<any> {
         let url_ = this.baseUrl + "/api/Auth/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -118,8 +139,13 @@ export class Service {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } };
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+                let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                return _observableOf<void>(resultData200);
+                result200 = resultData200;
+                localStorage.setItem('auth_token', result200['auth_token']);
+                this.loggedIn = true;
+                this._authNavStatusSource.next(true);
+                return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
@@ -140,7 +166,8 @@ export class Service {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Authorization": this.getAuthorizationToken()
             })
         };
 
@@ -200,7 +227,8 @@ export class Service {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Authorization": this.getAuthorizationToken()
             })
         };
 
@@ -254,7 +282,8 @@ export class Service {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Authorization": this.getAuthorizationToken()
             })
         };
 
@@ -313,6 +342,7 @@ export class Service {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Authorization": this.getAuthorizationToken()
             })
         };
 
@@ -363,7 +393,8 @@ export class Service {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Authorization": this.getAuthorizationToken()
             })
         };
 

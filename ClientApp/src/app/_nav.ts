@@ -19,12 +19,28 @@ export const navItems = [
   },
   {
     name: 'Employee Loans',
-    url: '/employee',
+    url: '/employee/loan',
     icon: 'icon-folder'
   },
   {
     title: true,
-    name: 'Account Management'
+    name: 'Reports'
+  },
+  {
+    name: 'Payroll',
+    url: '/reports',
+    icon: 'fa fa-file-pdf-o',
+    children: [
+      {
+        name: 'Payslip',
+        url: '/reports/payslip',
+        icon: 'fa fa-dollar'
+      }
+    ]
+  },
+  {
+    title: true,
+    name: 'Accounts'
   },
   {
     name: 'Accounts',

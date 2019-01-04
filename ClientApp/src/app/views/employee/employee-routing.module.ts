@@ -13,6 +13,19 @@ const routes: Routes = [
     data: {
       title: 'Employee Management'
     }
+    // children: [
+    //   {
+    //     path: '',
+    //     redirectTo: 'setup'
+    //   },
+    //   {
+    //     path: 'setup',
+    //     component: EmployeeComponent,
+    //     data: {
+    //       title: 'Setup'
+    //     }
+    //   }
+    // ]
   }
 ];
 

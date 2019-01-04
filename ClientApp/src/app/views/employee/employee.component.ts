@@ -11,7 +11,7 @@ export class EmployeeComponent implements OnInit {
   private employees: Employee[];
 
   constructor(private apiService: Service) {
-    this.getEmployeeAll();
+    // this.getEmployeeAll();
   }
 
   getEmployeeAll() {

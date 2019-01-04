@@ -1,5 +1,7 @@
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { navItems } from './../../_nav';
+import { Service } from '../../core/services/api.client.generated';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +12,7 @@ export class DefaultLayoutComponent implements OnDestroy {
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement = document.body;
-  constructor() {
+  constructor(private apiService: Service, private router: Router) {
 
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
@@ -18,11 +20,16 @@ export class DefaultLayoutComponent implements OnDestroy {
 
     this.changes.observe(<Element>this.element, {
       attributes: true,
-      attributeFilter: [ 'class' ]
+      attributeFilter: ['class']
     });
   }
 
   ngOnDestroy(): void {
     this.changes.disconnect();
+  }
+
+  logout() {
+    this.apiService.logout();
+    this.router.navigate(['/login']);
   }
 }

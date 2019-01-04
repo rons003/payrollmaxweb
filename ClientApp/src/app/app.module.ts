@@ -1,10 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { AuthGuard } from './auth.guard';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -43,9 +45,12 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 // Services
 import { Service } from './core/services/api.client.generated';
 
+import { MswnavbarComponent } from './views/mswnavbar/mswnavbar.component';
+
 @NgModule({
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     AppAsideModule,
     AppBreadcrumbModule.forRoot(),
@@ -64,9 +69,13 @@ import { Service } from './core/services/api.client.generated';
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    MswnavbarComponent
   ],
-  providers: [ Service],
+  providers: [
+    Service,
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

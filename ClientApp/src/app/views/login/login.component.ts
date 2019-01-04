@@ -1,46 +1,56 @@
-import { Component } from '@angular/core';
-import { Service, Employee, CredentialsViewModel } from '../../core/services/api.client.generated';
-import { BehaviorSubject } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Service, CredentialsViewModel } from '../../core/services/api.client.generated';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: 'login.component.html'
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
 
-  // Observable navItem source
-  private _authNavStatusSource = new BehaviorSubject<boolean>(false);
-  // Observable navItem stream
-  authNavStatus$ = this._authNavStatusSource.asObservable();
-  private loggedIn = false;
+  private subscription: Subscription;
+
+  errors: string;
+  isRequesting: boolean;
+  submitted = false;
+  credentials = new CredentialsViewModel({ userName: '', password: '' });
 
   constructor(
-    private apiService: Service
-  ) {
-    this.loggedIn = !!localStorage.getItem('auth_token');
+    private apiService: Service,
+    private router: Router, private activatedRoute: ActivatedRoute
+  ) { }
 
-  }
-
-  login(username: string, password: string) {
-    const credentials = new CredentialsViewModel();
-    credentials.userName = username;
-    credentials.password = password;
-    this.apiService.login(credentials)
-      .subscribe(response => {
-        // localStorage.setItem('auth_token', response['auth_token']);
-        // this.loggedIn = true;
-        console.log(response);
+  ngOnInit() {
+    // subscribe to router event
+    this.subscription = this.activatedRoute.queryParams.subscribe(
+      (param: any) => {
+        this.credentials.userName = param['userName'];
       });
   }
 
-  logout() {
-    localStorage.removeItem('auth_token');
-    this.loggedIn = false;
-    this._authNavStatusSource.next(false);
+  ngOnDestroy() {
+    // prevent memory leak by unsubscribing
+    this.subscription.unsubscribe();
   }
 
-  isLoggedIn() {
-    return this.loggedIn;
+  login({ value, valid }: { value: CredentialsViewModel, valid: boolean }) {
+    this.submitted = true;
+    this.isRequesting = true;
+    this.errors = '';
+    if (valid) {
+      this.apiService.login(value)
+        // .finally(() => this.isRequesting = false)
+        .subscribe(
+          response => {
+            console.log(response);
+            if (response) {
+              this.router.navigate(['/dashboard']);
+            }
+          },
+          error => this.errors = error);
+    }
   }
+
 }
