@@ -14,7 +14,6 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: 'dashboard',
-    canActivate: [AuthGuard],
     pathMatch: 'full',
   },
   {
@@ -48,7 +47,6 @@ export const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
-    canActivate: [AuthGuard],
     data: {
       title: 'Home'
     },
@@ -88,6 +86,10 @@ export const routes: Routes = [
       {
         path: 'widgets',
         loadChildren: './views/widgets/widgets.module#WidgetsModule'
+      },
+      {
+        path: 'reports',
+        loadChildren: './views/reports/reports.module#ReportsModule'
       }
     ]
   }

@@ -433,7 +433,560 @@ export class Service {
         }
         return _observableOf<Employee>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    getEmployeesAll(): Observable<Employees[]> {
+        let url_ = this.baseUrl + "/api/Employees";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployeesAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployeesAll(<any>response_);
+                } catch (e) {
+                    return <Observable<Employees[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Employees[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEmployeesAll(response: HttpResponseBase): Observable<Employees[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(Employees.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Employees[]>(<any>null);
+    }
+
+    /**
+     * @param employees (optional) 
+     * @return Success
+     */
+    postEmployees(employees: Employees | null | undefined): Observable<Employees> {
+        let url_ = this.baseUrl + "/api/Employees";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(employees);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostEmployees(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostEmployees(<any>response_);
+                } catch (e) {
+                    return <Observable<Employees>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Employees>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPostEmployees(response: HttpResponseBase): Observable<Employees> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Employees.fromJS(resultData200) : new Employees();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Employees>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getEmployees(id: string): Observable<Employees> {
+        let url_ = this.baseUrl + "/api/Employees/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmployees(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmployees(<any>response_);
+                } catch (e) {
+                    return <Observable<Employees>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Employees>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEmployees(response: HttpResponseBase): Observable<Employees> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Employees.fromJS(resultData200) : new Employees();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Employees>(<any>null);
+    }
+
+    /**
+     * @param employees (optional) 
+     * @return Success
+     */
+    putEmployees(id: string, employees: Employees | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Employees/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(employees);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPutEmployees(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPutEmployees(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPutEmployees(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    deleteEmployees(id: string): Observable<Employees> {
+        let url_ = this.baseUrl + "/api/Employees/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteEmployees(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteEmployees(<any>response_);
+                } catch (e) {
+                    return <Observable<Employees>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Employees>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteEmployees(response: HttpResponseBase): Observable<Employees> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? Employees.fromJS(resultData200) : new Employees();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Employees>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getPayrollHeaderAll(): Observable<PayrollHeader[]> {
+        let url_ = this.baseUrl + "/api/PayrollHead";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollHeaderAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollHeaderAll(<any>response_);
+                } catch (e) {
+                    return <Observable<PayrollHeader[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PayrollHeader[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPayrollHeaderAll(response: HttpResponseBase): Observable<PayrollHeader[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(PayrollHeader.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PayrollHeader[]>(<any>null);
+    }
+
+    /**
+     * @param payrollHeader (optional) 
+     * @return Success
+     */
+    postPayrollHeader(payrollHeader: PayrollHeader | null | undefined): Observable<PayrollHeader> {
+        let url_ = this.baseUrl + "/api/PayrollHead";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(payrollHeader);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostPayrollHeader(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostPayrollHeader(<any>response_);
+                } catch (e) {
+                    return <Observable<PayrollHeader>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PayrollHeader>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPostPayrollHeader(response: HttpResponseBase): Observable<PayrollHeader> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PayrollHeader.fromJS(resultData200) : new PayrollHeader();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PayrollHeader>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getPayrollHeader(id: string): Observable<PayrollHeader[]> {
+        let url_ = this.baseUrl + "/api/PayrollHead/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPayrollHeader(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPayrollHeader(<any>response_);
+                } catch (e) {
+                    return <Observable<PayrollHeader[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PayrollHeader[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPayrollHeader(response: HttpResponseBase): Observable<PayrollHeader[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(PayrollHeader.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PayrollHeader[]>(<any>null);
+    }
+
+    /**
+     * @param payrollHeader (optional) 
+     * @return Success
+     */
+    putPayrollHeader(id: string, payrollHeader: PayrollHeader | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/PayrollHead/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(payrollHeader);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPutPayrollHeader(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPutPayrollHeader(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPutPayrollHeader(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    deletePayrollHeader(id: string): Observable<PayrollHeader> {
+        let url_ = this.baseUrl + "/api/PayrollHead/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeletePayrollHeader(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeletePayrollHeader(<any>response_);
+                } catch (e) {
+                    return <Observable<PayrollHeader>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PayrollHeader>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeletePayrollHeader(response: HttpResponseBase): Observable<PayrollHeader> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PayrollHeader.fromJS(resultData200) : new PayrollHeader();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PayrollHeader>(<any>null);
+    }
 }
+
 
 export class RegistrationViewModel implements IRegistrationViewModel {
     email?: string | undefined;
@@ -472,7 +1025,7 @@ export class RegistrationViewModel implements IRegistrationViewModel {
         data["password"] = this.password;
         data["firstName"] = this.firstName;
         data["lastName"] = this.lastName;
-        return data;
+        return data; 
     }
 }
 
@@ -514,7 +1067,7 @@ export class CredentialsViewModel implements ICredentialsViewModel {
         data = typeof data === 'object' ? data : {};
         data["userName"] = this.userName;
         data["password"] = this.password;
-        return data;
+        return data; 
     }
 }
 
@@ -578,7 +1131,7 @@ export class Employee implements IEmployee {
         data["email"] = this.email;
         data["address"] = this.address;
         data["gender"] = this.gender;
-        return data;
+        return data; 
     }
 }
 
@@ -671,7 +1224,7 @@ export class AppUser implements IAppUser {
         data["lockoutEnd"] = this.lockoutEnd ? this.lockoutEnd.toISOString() : <any>undefined;
         data["lockoutEnabled"] = this.lockoutEnabled;
         data["accessFailedCount"] = this.accessFailedCount;
-        return data;
+        return data; 
     }
 }
 
@@ -695,12 +1248,1260 @@ export interface IAppUser {
     accessFailedCount?: number | undefined;
 }
 
+export class Employees implements IEmployees {
+    employeeNo?: string | undefined;
+    lastName?: string | undefined;
+    firstName?: string | undefined;
+    middleName?: string | undefined;
+    middleInitial?: string | undefined;
+    suffixName?: string | undefined;
+    dateHired?: Date | undefined;
+    dateFinish?: Date | undefined;
+    empStatus?: string | undefined;
+    payrollMode?: string | undefined;
+    department?: string | undefined;
+    category?: string | undefined;
+    monthlyRate?: number | undefined;
+    dailyRate?: number | undefined;
+    sssno?: string | undefined;
+    philHealthNo?: string | undefined;
+    pagIbigNo?: string | undefined;
+    taxIdno?: string | undefined;
+    bankAccountNo?: string | undefined;
+    empPosition?: string | undefined;
+    address01?: string | undefined;
+    address02?: string | undefined;
+    telephone01?: string | undefined;
+    telephone02?: string | undefined;
+    birthday?: Date | undefined;
+    civilStatus?: string | undefined;
+    gender?: string | undefined;
+    withSss?: string | undefined;
+    withPhilHealth?: string | undefined;
+    withTin?: string | undefined;
+    withPagibig?: string | undefined;
+    taxStatus?: string | undefined;
+    dateOfClearance?: Date | undefined;
+    payrollTerms?: string | undefined;
+    scheduleCode?: string | undefined;
+    withOvertime?: string | undefined;
+    withTardiness?: string | undefined;
+    restDay?: string | undefined;
+    isFlexiTime?: string | undefined;
+    colaamount?: number | undefined;
+    confiLevel?: string | undefined;
+    timeKeepingId?: string | undefined;
+    customPycode?: string | undefined;
+    rateDivisor?: number | undefined;
+    monthlyAllowance?: number | undefined;
+    dailyAllowance?: number | undefined;
+    bankCode?: string | undefined;
+    withPeraa?: string | undefined;
+    peraano?: string | undefined;
+    withUndertime?: string | undefined;
+    attendanceExempt?: string | undefined;
+    timekeepingAbsHrs?: number | undefined;
+    timekeepingAbsMins?: number | undefined;
+    billingRate?: number | undefined;
+    slvlcode?: string | undefined;
+    schedAllow?: string | undefined;
+    schedPass?: string | undefined;
+    gracePeriod?: number | undefined;
+    tardySetup?: string | undefined;
+    useTardyTable?: string | undefined;
+    includeGracePeriod?: string | undefined;
+    maxTardiness?: number | undefined;
+    daysOfYear?: number | undefined;
+    taxStart?: string | undefined;
+    taxEnd?: string | undefined;
+    dateRegular?: Date | undefined;
+    remarks?: string | undefined;
+    depCode?: string | undefined;
+    asBranchCode?: string | undefined;
+    dftLeaveCredit?: number | undefined;
+    terminationStatus?: string | undefined;
+    departmentNavigation?: Department | undefined;
+    employeeEducationNew?: EmployeeEducationNew[] | undefined;
+    employeeProjects?: EmployeeProjects[] | undefined;
+    employeeSchedule?: EmployeeSchedule[] | undefined;
+    employeeSlvl?: EmployeeSlvl[] | undefined;
+    employeeSlvldetails?: EmployeeSlvldetails[] | undefined;
+    employeeTaxStatus?: EmployeeTaxStatus[] | undefined;
+    employees201?: Employees201[] | undefined;
+    employeesRecurring?: EmployeesRecurring[] | undefined;
+
+    constructor(data?: IEmployees) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.employeeNo = data["employeeNo"];
+            this.lastName = data["lastName"];
+            this.firstName = data["firstName"];
+            this.middleName = data["middleName"];
+            this.middleInitial = data["middleInitial"];
+            this.suffixName = data["suffixName"];
+            this.dateHired = data["dateHired"] ? new Date(data["dateHired"].toString()) : <any>undefined;
+            this.dateFinish = data["dateFinish"] ? new Date(data["dateFinish"].toString()) : <any>undefined;
+            this.empStatus = data["empStatus"];
+            this.payrollMode = data["payrollMode"];
+            this.department = data["department"];
+            this.category = data["category"];
+            this.monthlyRate = data["monthlyRate"];
+            this.dailyRate = data["dailyRate"];
+            this.sssno = data["sssno"];
+            this.philHealthNo = data["philHealthNo"];
+            this.pagIbigNo = data["pagIbigNo"];
+            this.taxIdno = data["taxIdno"];
+            this.bankAccountNo = data["bankAccountNo"];
+            this.empPosition = data["empPosition"];
+            this.address01 = data["address01"];
+            this.address02 = data["address02"];
+            this.telephone01 = data["telephone01"];
+            this.telephone02 = data["telephone02"];
+            this.birthday = data["birthday"] ? new Date(data["birthday"].toString()) : <any>undefined;
+            this.civilStatus = data["civilStatus"];
+            this.gender = data["gender"];
+            this.withSss = data["withSss"];
+            this.withPhilHealth = data["withPhilHealth"];
+            this.withTin = data["withTin"];
+            this.withPagibig = data["withPagibig"];
+            this.taxStatus = data["taxStatus"];
+            this.dateOfClearance = data["dateOfClearance"] ? new Date(data["dateOfClearance"].toString()) : <any>undefined;
+            this.payrollTerms = data["payrollTerms"];
+            this.scheduleCode = data["scheduleCode"];
+            this.withOvertime = data["withOvertime"];
+            this.withTardiness = data["withTardiness"];
+            this.restDay = data["restDay"];
+            this.isFlexiTime = data["isFlexiTime"];
+            this.colaamount = data["colaamount"];
+            this.confiLevel = data["confiLevel"];
+            this.timeKeepingId = data["timeKeepingId"];
+            this.customPycode = data["customPycode"];
+            this.rateDivisor = data["rateDivisor"];
+            this.monthlyAllowance = data["monthlyAllowance"];
+            this.dailyAllowance = data["dailyAllowance"];
+            this.bankCode = data["bankCode"];
+            this.withPeraa = data["withPeraa"];
+            this.peraano = data["peraano"];
+            this.withUndertime = data["withUndertime"];
+            this.attendanceExempt = data["attendanceExempt"];
+            this.timekeepingAbsHrs = data["timekeepingAbsHrs"];
+            this.timekeepingAbsMins = data["timekeepingAbsMins"];
+            this.billingRate = data["billingRate"];
+            this.slvlcode = data["slvlcode"];
+            this.schedAllow = data["schedAllow"];
+            this.schedPass = data["schedPass"];
+            this.gracePeriod = data["gracePeriod"];
+            this.tardySetup = data["tardySetup"];
+            this.useTardyTable = data["useTardyTable"];
+            this.includeGracePeriod = data["includeGracePeriod"];
+            this.maxTardiness = data["maxTardiness"];
+            this.daysOfYear = data["daysOfYear"];
+            this.taxStart = data["taxStart"];
+            this.taxEnd = data["taxEnd"];
+            this.dateRegular = data["dateRegular"] ? new Date(data["dateRegular"].toString()) : <any>undefined;
+            this.remarks = data["remarks"];
+            this.depCode = data["depCode"];
+            this.asBranchCode = data["asBranchCode"];
+            this.dftLeaveCredit = data["dftLeaveCredit"];
+            this.terminationStatus = data["terminationStatus"];
+            this.departmentNavigation = data["departmentNavigation"] ? Department.fromJS(data["departmentNavigation"]) : <any>undefined;
+            if (data["employeeEducationNew"] && data["employeeEducationNew"].constructor === Array) {
+                this.employeeEducationNew = [];
+                for (let item of data["employeeEducationNew"])
+                    this.employeeEducationNew.push(EmployeeEducationNew.fromJS(item));
+            }
+            if (data["employeeProjects"] && data["employeeProjects"].constructor === Array) {
+                this.employeeProjects = [];
+                for (let item of data["employeeProjects"])
+                    this.employeeProjects.push(EmployeeProjects.fromJS(item));
+            }
+            if (data["employeeSchedule"] && data["employeeSchedule"].constructor === Array) {
+                this.employeeSchedule = [];
+                for (let item of data["employeeSchedule"])
+                    this.employeeSchedule.push(EmployeeSchedule.fromJS(item));
+            }
+            if (data["employeeSlvl"] && data["employeeSlvl"].constructor === Array) {
+                this.employeeSlvl = [];
+                for (let item of data["employeeSlvl"])
+                    this.employeeSlvl.push(EmployeeSlvl.fromJS(item));
+            }
+            if (data["employeeSlvldetails"] && data["employeeSlvldetails"].constructor === Array) {
+                this.employeeSlvldetails = [];
+                for (let item of data["employeeSlvldetails"])
+                    this.employeeSlvldetails.push(EmployeeSlvldetails.fromJS(item));
+            }
+            if (data["employeeTaxStatus"] && data["employeeTaxStatus"].constructor === Array) {
+                this.employeeTaxStatus = [];
+                for (let item of data["employeeTaxStatus"])
+                    this.employeeTaxStatus.push(EmployeeTaxStatus.fromJS(item));
+            }
+            if (data["employees201"] && data["employees201"].constructor === Array) {
+                this.employees201 = [];
+                for (let item of data["employees201"])
+                    this.employees201.push(Employees201.fromJS(item));
+            }
+            if (data["employeesRecurring"] && data["employeesRecurring"].constructor === Array) {
+                this.employeesRecurring = [];
+                for (let item of data["employeesRecurring"])
+                    this.employeesRecurring.push(EmployeesRecurring.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Employees {
+        data = typeof data === 'object' ? data : {};
+        let result = new Employees();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeNo"] = this.employeeNo;
+        data["lastName"] = this.lastName;
+        data["firstName"] = this.firstName;
+        data["middleName"] = this.middleName;
+        data["middleInitial"] = this.middleInitial;
+        data["suffixName"] = this.suffixName;
+        data["dateHired"] = this.dateHired ? this.dateHired.toISOString() : <any>undefined;
+        data["dateFinish"] = this.dateFinish ? this.dateFinish.toISOString() : <any>undefined;
+        data["empStatus"] = this.empStatus;
+        data["payrollMode"] = this.payrollMode;
+        data["department"] = this.department;
+        data["category"] = this.category;
+        data["monthlyRate"] = this.monthlyRate;
+        data["dailyRate"] = this.dailyRate;
+        data["sssno"] = this.sssno;
+        data["philHealthNo"] = this.philHealthNo;
+        data["pagIbigNo"] = this.pagIbigNo;
+        data["taxIdno"] = this.taxIdno;
+        data["bankAccountNo"] = this.bankAccountNo;
+        data["empPosition"] = this.empPosition;
+        data["address01"] = this.address01;
+        data["address02"] = this.address02;
+        data["telephone01"] = this.telephone01;
+        data["telephone02"] = this.telephone02;
+        data["birthday"] = this.birthday ? this.birthday.toISOString() : <any>undefined;
+        data["civilStatus"] = this.civilStatus;
+        data["gender"] = this.gender;
+        data["withSss"] = this.withSss;
+        data["withPhilHealth"] = this.withPhilHealth;
+        data["withTin"] = this.withTin;
+        data["withPagibig"] = this.withPagibig;
+        data["taxStatus"] = this.taxStatus;
+        data["dateOfClearance"] = this.dateOfClearance ? this.dateOfClearance.toISOString() : <any>undefined;
+        data["payrollTerms"] = this.payrollTerms;
+        data["scheduleCode"] = this.scheduleCode;
+        data["withOvertime"] = this.withOvertime;
+        data["withTardiness"] = this.withTardiness;
+        data["restDay"] = this.restDay;
+        data["isFlexiTime"] = this.isFlexiTime;
+        data["colaamount"] = this.colaamount;
+        data["confiLevel"] = this.confiLevel;
+        data["timeKeepingId"] = this.timeKeepingId;
+        data["customPycode"] = this.customPycode;
+        data["rateDivisor"] = this.rateDivisor;
+        data["monthlyAllowance"] = this.monthlyAllowance;
+        data["dailyAllowance"] = this.dailyAllowance;
+        data["bankCode"] = this.bankCode;
+        data["withPeraa"] = this.withPeraa;
+        data["peraano"] = this.peraano;
+        data["withUndertime"] = this.withUndertime;
+        data["attendanceExempt"] = this.attendanceExempt;
+        data["timekeepingAbsHrs"] = this.timekeepingAbsHrs;
+        data["timekeepingAbsMins"] = this.timekeepingAbsMins;
+        data["billingRate"] = this.billingRate;
+        data["slvlcode"] = this.slvlcode;
+        data["schedAllow"] = this.schedAllow;
+        data["schedPass"] = this.schedPass;
+        data["gracePeriod"] = this.gracePeriod;
+        data["tardySetup"] = this.tardySetup;
+        data["useTardyTable"] = this.useTardyTable;
+        data["includeGracePeriod"] = this.includeGracePeriod;
+        data["maxTardiness"] = this.maxTardiness;
+        data["daysOfYear"] = this.daysOfYear;
+        data["taxStart"] = this.taxStart;
+        data["taxEnd"] = this.taxEnd;
+        data["dateRegular"] = this.dateRegular ? this.dateRegular.toISOString() : <any>undefined;
+        data["remarks"] = this.remarks;
+        data["depCode"] = this.depCode;
+        data["asBranchCode"] = this.asBranchCode;
+        data["dftLeaveCredit"] = this.dftLeaveCredit;
+        data["terminationStatus"] = this.terminationStatus;
+        data["departmentNavigation"] = this.departmentNavigation ? this.departmentNavigation.toJSON() : <any>undefined;
+        if (this.employeeEducationNew && this.employeeEducationNew.constructor === Array) {
+            data["employeeEducationNew"] = [];
+            for (let item of this.employeeEducationNew)
+                data["employeeEducationNew"].push(item.toJSON());
+        }
+        if (this.employeeProjects && this.employeeProjects.constructor === Array) {
+            data["employeeProjects"] = [];
+            for (let item of this.employeeProjects)
+                data["employeeProjects"].push(item.toJSON());
+        }
+        if (this.employeeSchedule && this.employeeSchedule.constructor === Array) {
+            data["employeeSchedule"] = [];
+            for (let item of this.employeeSchedule)
+                data["employeeSchedule"].push(item.toJSON());
+        }
+        if (this.employeeSlvl && this.employeeSlvl.constructor === Array) {
+            data["employeeSlvl"] = [];
+            for (let item of this.employeeSlvl)
+                data["employeeSlvl"].push(item.toJSON());
+        }
+        if (this.employeeSlvldetails && this.employeeSlvldetails.constructor === Array) {
+            data["employeeSlvldetails"] = [];
+            for (let item of this.employeeSlvldetails)
+                data["employeeSlvldetails"].push(item.toJSON());
+        }
+        if (this.employeeTaxStatus && this.employeeTaxStatus.constructor === Array) {
+            data["employeeTaxStatus"] = [];
+            for (let item of this.employeeTaxStatus)
+                data["employeeTaxStatus"].push(item.toJSON());
+        }
+        if (this.employees201 && this.employees201.constructor === Array) {
+            data["employees201"] = [];
+            for (let item of this.employees201)
+                data["employees201"].push(item.toJSON());
+        }
+        if (this.employeesRecurring && this.employeesRecurring.constructor === Array) {
+            data["employeesRecurring"] = [];
+            for (let item of this.employeesRecurring)
+                data["employeesRecurring"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IEmployees {
+    employeeNo?: string | undefined;
+    lastName?: string | undefined;
+    firstName?: string | undefined;
+    middleName?: string | undefined;
+    middleInitial?: string | undefined;
+    suffixName?: string | undefined;
+    dateHired?: Date | undefined;
+    dateFinish?: Date | undefined;
+    empStatus?: string | undefined;
+    payrollMode?: string | undefined;
+    department?: string | undefined;
+    category?: string | undefined;
+    monthlyRate?: number | undefined;
+    dailyRate?: number | undefined;
+    sssno?: string | undefined;
+    philHealthNo?: string | undefined;
+    pagIbigNo?: string | undefined;
+    taxIdno?: string | undefined;
+    bankAccountNo?: string | undefined;
+    empPosition?: string | undefined;
+    address01?: string | undefined;
+    address02?: string | undefined;
+    telephone01?: string | undefined;
+    telephone02?: string | undefined;
+    birthday?: Date | undefined;
+    civilStatus?: string | undefined;
+    gender?: string | undefined;
+    withSss?: string | undefined;
+    withPhilHealth?: string | undefined;
+    withTin?: string | undefined;
+    withPagibig?: string | undefined;
+    taxStatus?: string | undefined;
+    dateOfClearance?: Date | undefined;
+    payrollTerms?: string | undefined;
+    scheduleCode?: string | undefined;
+    withOvertime?: string | undefined;
+    withTardiness?: string | undefined;
+    restDay?: string | undefined;
+    isFlexiTime?: string | undefined;
+    colaamount?: number | undefined;
+    confiLevel?: string | undefined;
+    timeKeepingId?: string | undefined;
+    customPycode?: string | undefined;
+    rateDivisor?: number | undefined;
+    monthlyAllowance?: number | undefined;
+    dailyAllowance?: number | undefined;
+    bankCode?: string | undefined;
+    withPeraa?: string | undefined;
+    peraano?: string | undefined;
+    withUndertime?: string | undefined;
+    attendanceExempt?: string | undefined;
+    timekeepingAbsHrs?: number | undefined;
+    timekeepingAbsMins?: number | undefined;
+    billingRate?: number | undefined;
+    slvlcode?: string | undefined;
+    schedAllow?: string | undefined;
+    schedPass?: string | undefined;
+    gracePeriod?: number | undefined;
+    tardySetup?: string | undefined;
+    useTardyTable?: string | undefined;
+    includeGracePeriod?: string | undefined;
+    maxTardiness?: number | undefined;
+    daysOfYear?: number | undefined;
+    taxStart?: string | undefined;
+    taxEnd?: string | undefined;
+    dateRegular?: Date | undefined;
+    remarks?: string | undefined;
+    depCode?: string | undefined;
+    asBranchCode?: string | undefined;
+    dftLeaveCredit?: number | undefined;
+    terminationStatus?: string | undefined;
+    departmentNavigation?: Department | undefined;
+    employeeEducationNew?: EmployeeEducationNew[] | undefined;
+    employeeProjects?: EmployeeProjects[] | undefined;
+    employeeSchedule?: EmployeeSchedule[] | undefined;
+    employeeSlvl?: EmployeeSlvl[] | undefined;
+    employeeSlvldetails?: EmployeeSlvldetails[] | undefined;
+    employeeTaxStatus?: EmployeeTaxStatus[] | undefined;
+    employees201?: Employees201[] | undefined;
+    employeesRecurring?: EmployeesRecurring[] | undefined;
+}
+
+export class Department implements IDepartment {
+    departmentCode?: string | undefined;
+    departmentDesc?: string | undefined;
+    employees?: Employees[] | undefined;
+
+    constructor(data?: IDepartment) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.departmentCode = data["departmentCode"];
+            this.departmentDesc = data["departmentDesc"];
+            if (data["employees"] && data["employees"].constructor === Array) {
+                this.employees = [];
+                for (let item of data["employees"])
+                    this.employees.push(Employees.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Department {
+        data = typeof data === 'object' ? data : {};
+        let result = new Department();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["departmentCode"] = this.departmentCode;
+        data["departmentDesc"] = this.departmentDesc;
+        if (this.employees && this.employees.constructor === Array) {
+            data["employees"] = [];
+            for (let item of this.employees)
+                data["employees"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IDepartment {
+    departmentCode?: string | undefined;
+    departmentDesc?: string | undefined;
+    employees?: Employees[] | undefined;
+}
+
+export class EmployeeEducationNew implements IEmployeeEducationNew {
+    employeeNo?: string | undefined;
+    schoolName?: string | undefined;
+    courseDesc?: string | undefined;
+    schoolAddress?: string | undefined;
+    yearGraduated?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+
+    constructor(data?: IEmployeeEducationNew) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.employeeNo = data["employeeNo"];
+            this.schoolName = data["schoolName"];
+            this.courseDesc = data["courseDesc"];
+            this.schoolAddress = data["schoolAddress"];
+            this.yearGraduated = data["yearGraduated"];
+            this.employeeNoNavigation = data["employeeNoNavigation"] ? Employees.fromJS(data["employeeNoNavigation"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): EmployeeEducationNew {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeEducationNew();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeNo"] = this.employeeNo;
+        data["schoolName"] = this.schoolName;
+        data["courseDesc"] = this.courseDesc;
+        data["schoolAddress"] = this.schoolAddress;
+        data["yearGraduated"] = this.yearGraduated;
+        data["employeeNoNavigation"] = this.employeeNoNavigation ? this.employeeNoNavigation.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IEmployeeEducationNew {
+    employeeNo?: string | undefined;
+    schoolName?: string | undefined;
+    courseDesc?: string | undefined;
+    schoolAddress?: string | undefined;
+    yearGraduated?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+}
+
+export class EmployeeProjects implements IEmployeeProjects {
+    employeeNo?: string | undefined;
+    dateFrom?: Date | undefined;
+    dateTo?: Date | undefined;
+    projectCode?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+
+    constructor(data?: IEmployeeProjects) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.employeeNo = data["employeeNo"];
+            this.dateFrom = data["dateFrom"] ? new Date(data["dateFrom"].toString()) : <any>undefined;
+            this.dateTo = data["dateTo"] ? new Date(data["dateTo"].toString()) : <any>undefined;
+            this.projectCode = data["projectCode"];
+            this.employeeNoNavigation = data["employeeNoNavigation"] ? Employees.fromJS(data["employeeNoNavigation"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): EmployeeProjects {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeProjects();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeNo"] = this.employeeNo;
+        data["dateFrom"] = this.dateFrom ? this.dateFrom.toISOString() : <any>undefined;
+        data["dateTo"] = this.dateTo ? this.dateTo.toISOString() : <any>undefined;
+        data["projectCode"] = this.projectCode;
+        data["employeeNoNavigation"] = this.employeeNoNavigation ? this.employeeNoNavigation.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IEmployeeProjects {
+    employeeNo?: string | undefined;
+    dateFrom?: Date | undefined;
+    dateTo?: Date | undefined;
+    projectCode?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+}
+
+export class EmployeeSchedule implements IEmployeeSchedule {
+    employeeNo?: string | undefined;
+    dateFrom?: Date | undefined;
+    dateTo?: Date | undefined;
+    scheduleCode?: string | undefined;
+    restDay?: string | undefined;
+    withOvertime?: string | undefined;
+    withTardiness?: string | undefined;
+    isFlexiTime?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+
+    constructor(data?: IEmployeeSchedule) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.employeeNo = data["employeeNo"];
+            this.dateFrom = data["dateFrom"] ? new Date(data["dateFrom"].toString()) : <any>undefined;
+            this.dateTo = data["dateTo"] ? new Date(data["dateTo"].toString()) : <any>undefined;
+            this.scheduleCode = data["scheduleCode"];
+            this.restDay = data["restDay"];
+            this.withOvertime = data["withOvertime"];
+            this.withTardiness = data["withTardiness"];
+            this.isFlexiTime = data["isFlexiTime"];
+            this.employeeNoNavigation = data["employeeNoNavigation"] ? Employees.fromJS(data["employeeNoNavigation"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): EmployeeSchedule {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeSchedule();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeNo"] = this.employeeNo;
+        data["dateFrom"] = this.dateFrom ? this.dateFrom.toISOString() : <any>undefined;
+        data["dateTo"] = this.dateTo ? this.dateTo.toISOString() : <any>undefined;
+        data["scheduleCode"] = this.scheduleCode;
+        data["restDay"] = this.restDay;
+        data["withOvertime"] = this.withOvertime;
+        data["withTardiness"] = this.withTardiness;
+        data["isFlexiTime"] = this.isFlexiTime;
+        data["employeeNoNavigation"] = this.employeeNoNavigation ? this.employeeNoNavigation.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IEmployeeSchedule {
+    employeeNo?: string | undefined;
+    dateFrom?: Date | undefined;
+    dateTo?: Date | undefined;
+    scheduleCode?: string | undefined;
+    restDay?: string | undefined;
+    withOvertime?: string | undefined;
+    withTardiness?: string | undefined;
+    isFlexiTime?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+}
+
+export class EmployeeSlvl implements IEmployeeSlvl {
+    employeeNo?: string | undefined;
+    effectivityFrom?: Date | undefined;
+    effectivityTo?: Date | undefined;
+    vacation?: number | undefined;
+    sick?: number | undefined;
+    vacationUsed?: number | undefined;
+    sickUsed?: number | undefined;
+    payrollPeriod?: string | undefined;
+    transYear?: string | undefined;
+    vacationBalance?: number | undefined;
+    sickBalance?: number | undefined;
+    sickGen?: number | undefined;
+    vacationGen?: number | undefined;
+    sickCon?: number | undefined;
+    vacationCon?: number | undefined;
+    vlconverted?: number | undefined;
+    slconverted?: number | undefined;
+    processType?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+
+    constructor(data?: IEmployeeSlvl) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.employeeNo = data["employeeNo"];
+            this.effectivityFrom = data["effectivityFrom"] ? new Date(data["effectivityFrom"].toString()) : <any>undefined;
+            this.effectivityTo = data["effectivityTo"] ? new Date(data["effectivityTo"].toString()) : <any>undefined;
+            this.vacation = data["vacation"];
+            this.sick = data["sick"];
+            this.vacationUsed = data["vacationUsed"];
+            this.sickUsed = data["sickUsed"];
+            this.payrollPeriod = data["payrollPeriod"];
+            this.transYear = data["transYear"];
+            this.vacationBalance = data["vacationBalance"];
+            this.sickBalance = data["sickBalance"];
+            this.sickGen = data["sickGen"];
+            this.vacationGen = data["vacationGen"];
+            this.sickCon = data["sickCon"];
+            this.vacationCon = data["vacationCon"];
+            this.vlconverted = data["vlconverted"];
+            this.slconverted = data["slconverted"];
+            this.processType = data["processType"];
+            this.employeeNoNavigation = data["employeeNoNavigation"] ? Employees.fromJS(data["employeeNoNavigation"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): EmployeeSlvl {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeSlvl();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeNo"] = this.employeeNo;
+        data["effectivityFrom"] = this.effectivityFrom ? this.effectivityFrom.toISOString() : <any>undefined;
+        data["effectivityTo"] = this.effectivityTo ? this.effectivityTo.toISOString() : <any>undefined;
+        data["vacation"] = this.vacation;
+        data["sick"] = this.sick;
+        data["vacationUsed"] = this.vacationUsed;
+        data["sickUsed"] = this.sickUsed;
+        data["payrollPeriod"] = this.payrollPeriod;
+        data["transYear"] = this.transYear;
+        data["vacationBalance"] = this.vacationBalance;
+        data["sickBalance"] = this.sickBalance;
+        data["sickGen"] = this.sickGen;
+        data["vacationGen"] = this.vacationGen;
+        data["sickCon"] = this.sickCon;
+        data["vacationCon"] = this.vacationCon;
+        data["vlconverted"] = this.vlconverted;
+        data["slconverted"] = this.slconverted;
+        data["processType"] = this.processType;
+        data["employeeNoNavigation"] = this.employeeNoNavigation ? this.employeeNoNavigation.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IEmployeeSlvl {
+    employeeNo?: string | undefined;
+    effectivityFrom?: Date | undefined;
+    effectivityTo?: Date | undefined;
+    vacation?: number | undefined;
+    sick?: number | undefined;
+    vacationUsed?: number | undefined;
+    sickUsed?: number | undefined;
+    payrollPeriod?: string | undefined;
+    transYear?: string | undefined;
+    vacationBalance?: number | undefined;
+    sickBalance?: number | undefined;
+    sickGen?: number | undefined;
+    vacationGen?: number | undefined;
+    sickCon?: number | undefined;
+    vacationCon?: number | undefined;
+    vlconverted?: number | undefined;
+    slconverted?: number | undefined;
+    processType?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+}
+
+export class EmployeeSlvldetails implements IEmployeeSlvldetails {
+    employeeNo?: string | undefined;
+    transDate?: Date | undefined;
+    leaveType?: string | undefined;
+    noOfHours?: number | undefined;
+    employeeNoNavigation?: Employees | undefined;
+
+    constructor(data?: IEmployeeSlvldetails) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.employeeNo = data["employeeNo"];
+            this.transDate = data["transDate"] ? new Date(data["transDate"].toString()) : <any>undefined;
+            this.leaveType = data["leaveType"];
+            this.noOfHours = data["noOfHours"];
+            this.employeeNoNavigation = data["employeeNoNavigation"] ? Employees.fromJS(data["employeeNoNavigation"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): EmployeeSlvldetails {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeSlvldetails();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeNo"] = this.employeeNo;
+        data["transDate"] = this.transDate ? this.transDate.toISOString() : <any>undefined;
+        data["leaveType"] = this.leaveType;
+        data["noOfHours"] = this.noOfHours;
+        data["employeeNoNavigation"] = this.employeeNoNavigation ? this.employeeNoNavigation.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IEmployeeSlvldetails {
+    employeeNo?: string | undefined;
+    transDate?: Date | undefined;
+    leaveType?: string | undefined;
+    noOfHours?: number | undefined;
+    employeeNoNavigation?: Employees | undefined;
+}
+
+export class EmployeeTaxStatus implements IEmployeeTaxStatus {
+    employeeNo?: string | undefined;
+    taxStatDate?: Date | undefined;
+    taxStatus?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+
+    constructor(data?: IEmployeeTaxStatus) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.employeeNo = data["employeeNo"];
+            this.taxStatDate = data["taxStatDate"] ? new Date(data["taxStatDate"].toString()) : <any>undefined;
+            this.taxStatus = data["taxStatus"];
+            this.employeeNoNavigation = data["employeeNoNavigation"] ? Employees.fromJS(data["employeeNoNavigation"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): EmployeeTaxStatus {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeTaxStatus();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeNo"] = this.employeeNo;
+        data["taxStatDate"] = this.taxStatDate ? this.taxStatDate.toISOString() : <any>undefined;
+        data["taxStatus"] = this.taxStatus;
+        data["employeeNoNavigation"] = this.employeeNoNavigation ? this.employeeNoNavigation.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IEmployeeTaxStatus {
+    employeeNo?: string | undefined;
+    taxStatDate?: Date | undefined;
+    taxStatus?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+}
+
+export class Employees201 implements IEmployees201 {
+    employeeNo?: string | undefined;
+    date201?: Date | undefined;
+    particular?: string | undefined;
+    sanctionType?: string | undefined;
+    docFileName?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+
+    constructor(data?: IEmployees201) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.employeeNo = data["employeeNo"];
+            this.date201 = data["date201"] ? new Date(data["date201"].toString()) : <any>undefined;
+            this.particular = data["particular"];
+            this.sanctionType = data["sanctionType"];
+            this.docFileName = data["docFileName"];
+            this.employeeNoNavigation = data["employeeNoNavigation"] ? Employees.fromJS(data["employeeNoNavigation"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Employees201 {
+        data = typeof data === 'object' ? data : {};
+        let result = new Employees201();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeNo"] = this.employeeNo;
+        data["date201"] = this.date201 ? this.date201.toISOString() : <any>undefined;
+        data["particular"] = this.particular;
+        data["sanctionType"] = this.sanctionType;
+        data["docFileName"] = this.docFileName;
+        data["employeeNoNavigation"] = this.employeeNoNavigation ? this.employeeNoNavigation.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IEmployees201 {
+    employeeNo?: string | undefined;
+    date201?: Date | undefined;
+    particular?: string | undefined;
+    sanctionType?: string | undefined;
+    docFileName?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+}
+
+export class EmployeesRecurring implements IEmployeesRecurring {
+    employeeNo?: string | undefined;
+    accountCode?: string | undefined;
+    freq?: string | undefined;
+    amount?: number | undefined;
+    status?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+
+    constructor(data?: IEmployeesRecurring) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.employeeNo = data["employeeNo"];
+            this.accountCode = data["accountCode"];
+            this.freq = data["freq"];
+            this.amount = data["amount"];
+            this.status = data["status"];
+            this.employeeNoNavigation = data["employeeNoNavigation"] ? Employees.fromJS(data["employeeNoNavigation"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): EmployeesRecurring {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeesRecurring();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["employeeNo"] = this.employeeNo;
+        data["accountCode"] = this.accountCode;
+        data["freq"] = this.freq;
+        data["amount"] = this.amount;
+        data["status"] = this.status;
+        data["employeeNoNavigation"] = this.employeeNoNavigation ? this.employeeNoNavigation.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IEmployeesRecurring {
+    employeeNo?: string | undefined;
+    accountCode?: string | undefined;
+    freq?: string | undefined;
+    amount?: number | undefined;
+    status?: string | undefined;
+    employeeNoNavigation?: Employees | undefined;
+}
+
+export class PayrollHeader implements IPayrollHeader {
+    payrollPeriod?: string | undefined;
+    employeeNo?: string | undefined;
+    monthlyRate?: number | undefined;
+    dailyRate?: number | undefined;
+    departmentCode?: string | undefined;
+    basicPay?: number | undefined;
+    otpay?: number | undefined;
+    otherIncome?: number | undefined;
+    month13th?: number | undefined;
+    sssemployee?: number | undefined;
+    sssemployer?: number | undefined;
+    sssec?: number | undefined;
+    philHealthEmployee?: number | undefined;
+    philHealthEmployer?: number | undefined;
+    pagIbigEmployee?: number | undefined;
+    pagIbigEmployer?: number | undefined;
+    witholdingTax?: number | undefined;
+    otherDeduction?: number | undefined;
+    gross?: number | undefined;
+    totalDeductions?: number | undefined;
+    netPay?: number | undefined;
+    department?: string | undefined;
+    bankAccountNo?: string | undefined;
+    payrollMode?: string | undefined;
+    nonTaxable?: number | undefined;
+    deminimis?: number | undefined;
+    entryType?: string | undefined;
+    unionDues?: number | undefined;
+    sssbaseAmount?: number | undefined;
+    philHealthBaseAmount?: number | undefined;
+    pagIbigBaseAmount?: number | undefined;
+    taxBaseAmount?: number | undefined;
+    bankCode?: string | undefined;
+    peraaemployee?: number | undefined;
+    peraaemployer?: number | undefined;
+    peraabaseAmount?: number | undefined;
+    billingRate?: number | undefined;
+    healthInsurance?: number | undefined;
+    holidayPay?: number | undefined;
+    overtimePay?: number | undefined;
+    nightDiffPay?: number | undefined;
+    hazardPay?: number | undefined;
+    otherCompen?: number | undefined;
+    colaamount?: number | undefined;
+    withTin?: string | undefined;
+    nonTaxPagIbig?: number | undefined;
+    isMwe?: string | undefined;
+    totalDays?: number | undefined;
+    totalHrs?: number | undefined;
+    sssloan?: number | undefined;
+    pagibigLoan?: number | undefined;
+    otherLoan?: number | undefined;
+    othrs?: number | undefined;
+    splhrs?: number | undefined;
+    leghrs?: number | undefined;
+    sunhrs?: number | undefined;
+    splpay?: number | undefined;
+    legpay?: number | undefined;
+    sunpay?: number | undefined;
+    calamityLoan?: number | undefined;
+    branch?: string | undefined;
+    payrollType?: string | undefined;
+    validated?: string | undefined;
+
+    constructor(data?: IPayrollHeader) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.payrollPeriod = data["payrollPeriod"];
+            this.employeeNo = data["employeeNo"];
+            this.monthlyRate = data["monthlyRate"];
+            this.dailyRate = data["dailyRate"];
+            this.departmentCode = data["departmentCode"];
+            this.basicPay = data["basicPay"];
+            this.otpay = data["otpay"];
+            this.otherIncome = data["otherIncome"];
+            this.month13th = data["month13th"];
+            this.sssemployee = data["sssemployee"];
+            this.sssemployer = data["sssemployer"];
+            this.sssec = data["sssec"];
+            this.philHealthEmployee = data["philHealthEmployee"];
+            this.philHealthEmployer = data["philHealthEmployer"];
+            this.pagIbigEmployee = data["pagIbigEmployee"];
+            this.pagIbigEmployer = data["pagIbigEmployer"];
+            this.witholdingTax = data["witholdingTax"];
+            this.otherDeduction = data["otherDeduction"];
+            this.gross = data["gross"];
+            this.totalDeductions = data["totalDeductions"];
+            this.netPay = data["netPay"];
+            this.department = data["department"];
+            this.bankAccountNo = data["bankAccountNo"];
+            this.payrollMode = data["payrollMode"];
+            this.nonTaxable = data["nonTaxable"];
+            this.deminimis = data["deminimis"];
+            this.entryType = data["entryType"];
+            this.unionDues = data["unionDues"];
+            this.sssbaseAmount = data["sssbaseAmount"];
+            this.philHealthBaseAmount = data["philHealthBaseAmount"];
+            this.pagIbigBaseAmount = data["pagIbigBaseAmount"];
+            this.taxBaseAmount = data["taxBaseAmount"];
+            this.bankCode = data["bankCode"];
+            this.peraaemployee = data["peraaemployee"];
+            this.peraaemployer = data["peraaemployer"];
+            this.peraabaseAmount = data["peraabaseAmount"];
+            this.billingRate = data["billingRate"];
+            this.healthInsurance = data["healthInsurance"];
+            this.holidayPay = data["holidayPay"];
+            this.overtimePay = data["overtimePay"];
+            this.nightDiffPay = data["nightDiffPay"];
+            this.hazardPay = data["hazardPay"];
+            this.otherCompen = data["otherCompen"];
+            this.colaamount = data["colaamount"];
+            this.withTin = data["withTin"];
+            this.nonTaxPagIbig = data["nonTaxPagIbig"];
+            this.isMwe = data["isMwe"];
+            this.totalDays = data["totalDays"];
+            this.totalHrs = data["totalHrs"];
+            this.sssloan = data["sssloan"];
+            this.pagibigLoan = data["pagibigLoan"];
+            this.otherLoan = data["otherLoan"];
+            this.othrs = data["othrs"];
+            this.splhrs = data["splhrs"];
+            this.leghrs = data["leghrs"];
+            this.sunhrs = data["sunhrs"];
+            this.splpay = data["splpay"];
+            this.legpay = data["legpay"];
+            this.sunpay = data["sunpay"];
+            this.calamityLoan = data["calamityLoan"];
+            this.branch = data["branch"];
+            this.payrollType = data["payrollType"];
+            this.validated = data["validated"];
+        }
+    }
+
+    static fromJS(data: any): PayrollHeader {
+        data = typeof data === 'object' ? data : {};
+        let result = new PayrollHeader();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["payrollPeriod"] = this.payrollPeriod;
+        data["employeeNo"] = this.employeeNo;
+        data["monthlyRate"] = this.monthlyRate;
+        data["dailyRate"] = this.dailyRate;
+        data["departmentCode"] = this.departmentCode;
+        data["basicPay"] = this.basicPay;
+        data["otpay"] = this.otpay;
+        data["otherIncome"] = this.otherIncome;
+        data["month13th"] = this.month13th;
+        data["sssemployee"] = this.sssemployee;
+        data["sssemployer"] = this.sssemployer;
+        data["sssec"] = this.sssec;
+        data["philHealthEmployee"] = this.philHealthEmployee;
+        data["philHealthEmployer"] = this.philHealthEmployer;
+        data["pagIbigEmployee"] = this.pagIbigEmployee;
+        data["pagIbigEmployer"] = this.pagIbigEmployer;
+        data["witholdingTax"] = this.witholdingTax;
+        data["otherDeduction"] = this.otherDeduction;
+        data["gross"] = this.gross;
+        data["totalDeductions"] = this.totalDeductions;
+        data["netPay"] = this.netPay;
+        data["department"] = this.department;
+        data["bankAccountNo"] = this.bankAccountNo;
+        data["payrollMode"] = this.payrollMode;
+        data["nonTaxable"] = this.nonTaxable;
+        data["deminimis"] = this.deminimis;
+        data["entryType"] = this.entryType;
+        data["unionDues"] = this.unionDues;
+        data["sssbaseAmount"] = this.sssbaseAmount;
+        data["philHealthBaseAmount"] = this.philHealthBaseAmount;
+        data["pagIbigBaseAmount"] = this.pagIbigBaseAmount;
+        data["taxBaseAmount"] = this.taxBaseAmount;
+        data["bankCode"] = this.bankCode;
+        data["peraaemployee"] = this.peraaemployee;
+        data["peraaemployer"] = this.peraaemployer;
+        data["peraabaseAmount"] = this.peraabaseAmount;
+        data["billingRate"] = this.billingRate;
+        data["healthInsurance"] = this.healthInsurance;
+        data["holidayPay"] = this.holidayPay;
+        data["overtimePay"] = this.overtimePay;
+        data["nightDiffPay"] = this.nightDiffPay;
+        data["hazardPay"] = this.hazardPay;
+        data["otherCompen"] = this.otherCompen;
+        data["colaamount"] = this.colaamount;
+        data["withTin"] = this.withTin;
+        data["nonTaxPagIbig"] = this.nonTaxPagIbig;
+        data["isMwe"] = this.isMwe;
+        data["totalDays"] = this.totalDays;
+        data["totalHrs"] = this.totalHrs;
+        data["sssloan"] = this.sssloan;
+        data["pagibigLoan"] = this.pagibigLoan;
+        data["otherLoan"] = this.otherLoan;
+        data["othrs"] = this.othrs;
+        data["splhrs"] = this.splhrs;
+        data["leghrs"] = this.leghrs;
+        data["sunhrs"] = this.sunhrs;
+        data["splpay"] = this.splpay;
+        data["legpay"] = this.legpay;
+        data["sunpay"] = this.sunpay;
+        data["calamityLoan"] = this.calamityLoan;
+        data["branch"] = this.branch;
+        data["payrollType"] = this.payrollType;
+        data["validated"] = this.validated;
+        return data; 
+    }
+}
+
+export interface IPayrollHeader {
+    payrollPeriod?: string | undefined;
+    employeeNo?: string | undefined;
+    monthlyRate?: number | undefined;
+    dailyRate?: number | undefined;
+    departmentCode?: string | undefined;
+    basicPay?: number | undefined;
+    otpay?: number | undefined;
+    otherIncome?: number | undefined;
+    month13th?: number | undefined;
+    sssemployee?: number | undefined;
+    sssemployer?: number | undefined;
+    sssec?: number | undefined;
+    philHealthEmployee?: number | undefined;
+    philHealthEmployer?: number | undefined;
+    pagIbigEmployee?: number | undefined;
+    pagIbigEmployer?: number | undefined;
+    witholdingTax?: number | undefined;
+    otherDeduction?: number | undefined;
+    gross?: number | undefined;
+    totalDeductions?: number | undefined;
+    netPay?: number | undefined;
+    department?: string | undefined;
+    bankAccountNo?: string | undefined;
+    payrollMode?: string | undefined;
+    nonTaxable?: number | undefined;
+    deminimis?: number | undefined;
+    entryType?: string | undefined;
+    unionDues?: number | undefined;
+    sssbaseAmount?: number | undefined;
+    philHealthBaseAmount?: number | undefined;
+    pagIbigBaseAmount?: number | undefined;
+    taxBaseAmount?: number | undefined;
+    bankCode?: string | undefined;
+    peraaemployee?: number | undefined;
+    peraaemployer?: number | undefined;
+    peraabaseAmount?: number | undefined;
+    billingRate?: number | undefined;
+    healthInsurance?: number | undefined;
+    holidayPay?: number | undefined;
+    overtimePay?: number | undefined;
+    nightDiffPay?: number | undefined;
+    hazardPay?: number | undefined;
+    otherCompen?: number | undefined;
+    colaamount?: number | undefined;
+    withTin?: string | undefined;
+    nonTaxPagIbig?: number | undefined;
+    isMwe?: string | undefined;
+    totalDays?: number | undefined;
+    totalHrs?: number | undefined;
+    sssloan?: number | undefined;
+    pagibigLoan?: number | undefined;
+    otherLoan?: number | undefined;
+    othrs?: number | undefined;
+    splhrs?: number | undefined;
+    leghrs?: number | undefined;
+    sunhrs?: number | undefined;
+    splpay?: number | undefined;
+    legpay?: number | undefined;
+    sunpay?: number | undefined;
+    calamityLoan?: number | undefined;
+    branch?: string | undefined;
+    payrollType?: string | undefined;
+    validated?: string | undefined;
+}
+
 export class SwaggerException extends Error {
     message: string;
-    status: number;
-    response: string;
+    status: number; 
+    response: string; 
     headers: { [key: string]: any; };
-    result: any;
+    result: any; 
 
     constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
         super();
@@ -720,7 +2521,7 @@ export class SwaggerException extends Error {
 }
 
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): Observable<any> {
-    if (result !== null && result !== undefined)
+    if(result !== null && result !== undefined)
         return _observableThrow(result);
     else
         return _observableThrow(new SwaggerException(message, status, response, headers, null));
@@ -732,12 +2533,12 @@ function blobToText(blob: any): Observable<string> {
             observer.next("");
             observer.complete();
         } else {
-            let reader = new FileReader();
-            reader.onload = event => {
+            let reader = new FileReader(); 
+            reader.onload = event => { 
                 observer.next((<any>event.target).result);
                 observer.complete();
             };
-            reader.readAsText(blob);
+            reader.readAsText(blob); 
         }
     });
 }

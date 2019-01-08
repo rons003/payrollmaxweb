@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Service, Employee } from '../../core/services/api.client.generated';
+import { Service, Employee, PayrollHeader } from '../../core/services/api.client.generated';
 
 @Component({
   templateUrl: './employee.component.html'
@@ -9,6 +9,7 @@ export class EmployeeComponent implements OnInit {
 
   public primaryModal;
   private employees: Employee[];
+  private payrollPeriods: PayrollHeader[];
 
   constructor(private apiService: Service) {
     // this.getEmployeeAll();
@@ -18,6 +19,14 @@ export class EmployeeComponent implements OnInit {
     this.apiService.getEmployeeAll()
       .subscribe(response => {
         this.employees = response;
+      });
+  }
+
+  getPayrollHeader(empno: string) {
+    console.log(empno);
+    this.apiService.getPayrollHeader(empno)
+      .subscribe(response => {
+        this.payrollPeriods = response;
       });
   }
 

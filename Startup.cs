@@ -39,8 +39,8 @@ namespace payroll
         public void ConfigureServices(IServiceCollection services)
         {
 
-            var connection = @"Server=localhost;Initial Catalog=PayrollMaxWeb;Persist Security Info=False;User ID=sa;Password=B1Admin;";
-            services.AddDbContext<PayrollDbContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("PayrollMaxWeb")));
+            var connection = @"Server=localhost;Initial Catalog=DESIPAYROLL;Persist Security Info=False;User ID=sa;Password=B1Admin;";
+            services.AddDbContext<IntegraDbContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("DESIPAYROLL")));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
@@ -128,7 +128,7 @@ namespace payroll
 
 
             services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
-
+            services.AddMemoryCache();
             services.AddAutoMapper();
         }
 

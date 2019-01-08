@@ -8,20 +8,20 @@ export const navItems = [
       text: 'NEW'
     }
   },
-  {
-    title: true,
-    name: 'Employee Management'
-  },
-  {
-    name: 'Employee Setup',
-    url: '/employee',
-    icon: 'icon-people'
-  },
-  {
-    name: 'Employee Loans',
-    url: '/employee/loan',
-    icon: 'icon-folder'
-  },
+  // {
+  //   title: true,
+  //   name: 'Employee Management'
+  // },
+  // {
+  //   name: 'Employee Setup',
+  //   url: '/employee',
+  //   icon: 'icon-people'
+  // },
+  // {
+  //   name: 'Employee Loans',
+  //   url: '/employee/loan',
+  //   icon: 'icon-folder'
+  // },
   {
     title: true,
     name: 'Reports'
@@ -32,8 +32,8 @@ export const navItems = [
     icon: 'fa fa-file-pdf-o',
     children: [
       {
-        name: 'Payslip',
-        url: '/reports/payslip',
+        name: 'Payroll Period',
+        url: '/reports',
         icon: 'fa fa-dollar'
       }
     ]
@@ -44,7 +44,7 @@ export const navItems = [
   },
   {
     name: 'Accounts',
-    url: '/employee',
+    url: '/accounts',
     icon: 'fa fa-lock'
   }
   // {
