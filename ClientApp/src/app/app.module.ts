@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { AuthGuard } from './auth.guard';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -73,8 +72,7 @@ import { MswnavbarComponent } from './views/mswnavbar/mswnavbar.component';
     MswnavbarComponent
   ],
   providers: [
-    Service,
-    AuthGuard
+    Service
   ],
   bootstrap: [AppComponent]
 })

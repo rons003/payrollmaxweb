@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using payroll.Models;
+
+namespace payroll.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ViewEmployeeController : ControllerBase
+    {
+        private readonly IntegraDbContext _context;
+
+        public ViewEmployeeController(IntegraDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: api/ViewEmployee
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<VwsEmployee>>> GetVwsEmployees()
+        {
+            return await _context.VwsEmployees.ToListAsync();
+        }
+
+        // GET: api/ViewEmployee/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<VwsEmployee>> GetVwsEmployee(string id)
+        {
+            var vwsEmployee = await _context.VwsEmployees.FindAsync(id);
+
+            if (vwsEmployee == null)
+            {
+                return NotFound();
+            }
+
+            return vwsEmployee;
+        }
+    }
+}

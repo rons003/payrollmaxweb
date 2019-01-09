@@ -29,7 +29,6 @@ export class DefaultLayoutComponent implements OnDestroy {
   }
 
   logout() {
-    this.apiService.logout();
-    this.router.navigate(['/login']);
+    //
   }
 }

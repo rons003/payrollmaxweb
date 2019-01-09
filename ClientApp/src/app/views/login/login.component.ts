@@ -40,16 +40,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isRequesting = true;
     this.errors = '';
     if (valid) {
-      this.apiService.login(value)
-        // .finally(() => this.isRequesting = false)
-        .subscribe(
-          response => {
-            console.log(response);
-            if (response) {
-              this.router.navigate(['/dashboard']);
-            }
-          },
-          error => this.errors = error);
+      // this.apiService.login(value)
+      //   // .finally(() => this.isRequesting = false)
+      //   .subscribe(
+      //     response => {
+      //       console.log(response);
+      //       if (response) {
+      //         this.router.navigate(['/dashboard']);
+      //       }
+      //     },
+      //     error => this.errors = error);
     }
   }
 

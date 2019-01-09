@@ -12,7 +12,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
         // Get the auth token from the service.
-        const authToken = this.apiService.getAuthorizationToken();
+        const authToken = 'this.apiService.getAuthorizationToken()';
 
         /*
         * The verbose way:

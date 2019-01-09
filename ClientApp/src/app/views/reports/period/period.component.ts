@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Service, PayrollHeader, Employees, Employee } from '../../../core/services/api.client.generated';
+import { Service, VwsEmployee, VwsPayrollHeader } from '../../../core/services/api.client.generated';
 
 @Component({
   selector: 'app-period',
@@ -8,12 +8,12 @@ import { Service, PayrollHeader, Employees, Employee } from '../../../core/servi
 })
 export class PeriodComponent implements OnInit {
 
-  private payrollPeriods: PayrollHeader[];
-  private employee: Employees;
+  private payrollPeriods: VwsPayrollHeader[];
+  private employee: VwsEmployee;
   constructor(
     private apiService: Service
   ) {
-    this.employee = new Employee();
+    // this.employee = new VwsEmployee();
   }
 
   ngOnInit() {
@@ -25,10 +25,12 @@ export class PeriodComponent implements OnInit {
   }
 
   getPayrollHeader(empno: string) {
-    this.apiService.getPayrollHeader(empno)
-      .subscribe(response => {
-        this.payrollPeriods = response;
-      });
+    this.apiService.getPayrollPeriod(Number(empno))
+      .subscribe(
+        response => {
+          this.payrollPeriods = response;
+        }
+      );
   }
 
   viewReport(empno: string, period: string) {
@@ -36,7 +38,7 @@ export class PeriodComponent implements OnInit {
   }
 
   getEmployee(empno: string) {
-    this.apiService.getEmployees(empno)
+    this.apiService.getVwsEmployee(empno)
       .subscribe(
         (res: any) => {
           if (res != null) {

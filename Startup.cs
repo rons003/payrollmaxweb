@@ -39,8 +39,8 @@ namespace payroll
         public void ConfigureServices(IServiceCollection services)
         {
 
-            var connection = @"Server=localhost;Initial Catalog=DESIPAYROLL;Persist Security Info=False;User ID=sa;Password=B1Admin;";
-            services.AddDbContext<IntegraDbContext>(options => options.UseSqlServer(connection, b => b.MigrationsAssembly("DESIPAYROLL")));
+            services.AddDbContext<IntegraDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("IntegraConnection")));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
