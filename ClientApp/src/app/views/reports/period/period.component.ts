@@ -13,7 +13,7 @@ export class PeriodComponent implements OnInit {
   constructor(
     private apiService: Service
   ) {
-    // this.employee = new VwsEmployee();
+    this.employee = new VwsEmployee();
   }
 
   ngOnInit() {

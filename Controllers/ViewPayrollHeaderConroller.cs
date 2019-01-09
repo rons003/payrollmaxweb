@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using payroll.Models;
+using Newtonsoft.Json.Bson;
 
 namespace payroll.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class ViewPayrollHeaderController : ControllerBase
     {

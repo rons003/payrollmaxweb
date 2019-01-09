@@ -31,7 +31,13 @@ namespace payroll.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<VwsEmployee>> GetVwsEmployee(string id)
         {
-            var vwsEmployee = await _context.VwsEmployees.FindAsync(id);
+            var vwsEmployee = await _context.VwsEmployees
+                .Where(e => e.EmployeeNo == id)
+                .Select(
+                    e => new VwsEmployee() {
+                        EmployeeName = e.EmployeeName
+                    }
+                ).FirstOrDefaultAsync();
 
             if (vwsEmployee == null)
             {

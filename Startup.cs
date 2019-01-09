@@ -40,7 +40,8 @@ namespace payroll
         {
 
             services.AddDbContext<IntegraDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IntegraConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("IntegraConnection")
+                ,b => b.MigrationsAssembly("IntegraData")));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
@@ -101,7 +102,7 @@ namespace payroll
                 o.Password.RequiredLength = 6;
             });
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
-            builder.AddEntityFrameworkStores<PayrollDbContext>().AddDefaultTokenProviders();
+            builder.AddEntityFrameworkStores<IntegraDbContext>().AddDefaultTokenProviders();
 
             services.AddAutoMapper();
 

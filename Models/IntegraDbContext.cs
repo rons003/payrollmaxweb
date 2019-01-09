@@ -1,9 +1,10 @@
 using payroll.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace payroll.Models
 {
-    public class IntegraDbContext : DbContext
+    public class IntegraDbContext : IdentityDbContext<AppUser>
     {
         public IntegraDbContext(DbContextOptions<IntegraDbContext> options) : base(options)
         {
@@ -15,7 +16,7 @@ namespace payroll.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<VwsPayrollHeader>().ToTable("vwsPayrollHeader");
-            modelBuilder.Entity<VwsEmployee>().ToTable("vwsEmployees").HasKey(e => e.EmployeeNo);
+            modelBuilder.Entity<VwsEmployee>().ToTable("vwsEmployees");
         }
     }
 }

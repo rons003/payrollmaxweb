@@ -13,5 +13,7 @@ namespace payroll.Models
         public string MiddleName { get; set; }
         public string MiddleInitial { get; set; }
         public string SuffixName { get; set; }
+
+        public string EmployeeName { get; set; }
     }
 }

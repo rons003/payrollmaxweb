@@ -241,7 +241,7 @@ export class Service {
      * @return Success
      */
     getPayrollPeriod(id: number): Observable<VwsPayrollHeader[]> {
-        let url_ = this.baseUrl + "/{id}";
+        let url_ = this.baseUrl + "/api/ViewPayrollHeader/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
@@ -391,6 +391,7 @@ export class VwsEmployee implements IVwsEmployee {
     middleName?: string | undefined;
     middleInitial?: string | undefined;
     suffixName?: string | undefined;
+    employeeName?: string | undefined;
 
     constructor(data?: IVwsEmployee) {
         if (data) {
@@ -409,6 +410,7 @@ export class VwsEmployee implements IVwsEmployee {
             this.middleName = data["middleName"];
             this.middleInitial = data["middleInitial"];
             this.suffixName = data["suffixName"];
+            this.employeeName = data["employeeName"];
         }
     }
 
@@ -427,6 +429,7 @@ export class VwsEmployee implements IVwsEmployee {
         data["middleName"] = this.middleName;
         data["middleInitial"] = this.middleInitial;
         data["suffixName"] = this.suffixName;
+        data["employeeName"] = this.employeeName;
         return data; 
     }
 }
@@ -438,6 +441,7 @@ export interface IVwsEmployee {
     middleName?: string | undefined;
     middleInitial?: string | undefined;
     suffixName?: string | undefined;
+    employeeName?: string | undefined;
 }
 
 export class VwsPayrollHeader implements IVwsPayrollHeader {

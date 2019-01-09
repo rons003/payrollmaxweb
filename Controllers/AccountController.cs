@@ -11,11 +11,11 @@ namespace payroll.Controllers
     [Route("api/[controller]")]
     public class AccountsController : Controller
     {
-        private readonly PayrollDbContext _appDbContext;
+        private readonly IntegraDbContext _appDbContext;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public AccountsController(UserManager<AppUser> userManager, IMapper mapper, PayrollDbContext appDbContext)
+        public AccountsController(UserManager<AppUser> userManager, IMapper mapper, IntegraDbContext appDbContext)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -37,11 +37,11 @@ namespace payroll.Controllers
 
             if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
 
-            await _appDbContext.Employee.AddAsync(
-                new Employee { 
-                    IdentityId = userIdentity.Id, 
-                    Firstname = model.FirstName
-                    });
+            // await _appDbContext.Employee.AddAsync(
+            //     new Employee { 
+            //         IdentityId = userIdentity.Id, 
+            //         Firstname = model.FirstName
+            //         });
             await _appDbContext.SaveChangesAsync();
 
             return new OkObjectResult("Account created");
