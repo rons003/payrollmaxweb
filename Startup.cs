@@ -40,8 +40,8 @@ namespace payroll
         {
 
             services.AddDbContext<IntegraDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IntegraConnection")
-                ,b => b.MigrationsAssembly("IntegraData")));
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("IntegraConnection")));
 
             services.AddSingleton<IJwtFactory, JwtFactory>();
 

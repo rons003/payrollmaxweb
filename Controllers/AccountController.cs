@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Threading.Tasks;
 using payroll.Models;
 using payroll.ViewModels;
@@ -31,20 +32,32 @@ namespace payroll.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userIdentity = _mapper.Map<AppUser>(model);
+            var employeeValidate = _appDbContext.VwsEmployees
+                .Where(e => e.EmployeeNo == model.EmployeeNo)
+                .Where(e => e.MiddleInitial == model.MiddleInitial + '.')
+                .Where(e => e.Birthday == model.Birthday)
+                .FirstOrDefault();
 
-            var result = await _userManager.CreateAsync(userIdentity, model.Password);
+            if (employeeValidate != null)
+            {
+                var userIdentity = _mapper.Map<AppUser>(model);
 
-            if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+                var result = await _userManager.CreateAsync(userIdentity, model.Password);
 
-            // await _appDbContext.Employee.AddAsync(
-            //     new Employee { 
-            //         IdentityId = userIdentity.Id, 
-            //         Firstname = model.FirstName
-            //         });
-            await _appDbContext.SaveChangesAsync();
+                if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
 
-            return new OkObjectResult("Account created");
+                // await _appDbContext.Employee.AddAsync(
+                //     new Employee { 
+                //         IdentityId = userIdentity.Id, 
+                //         Firstname = model.FirstName
+                //         });
+                await _appDbContext.SaveChangesAsync();
+
+                return new OkObjectResult("Account created");
+            } else {
+                return new OkObjectResult("Information is not Matching...");
+            }
+
         }
     }
 }

@@ -1,4 +1,3 @@
-using payroll.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -12,11 +11,14 @@ namespace payroll.Models
 
         public DbSet<VwsPayrollHeader> VwsPayrollHeaders { get; set; }
         public DbSet<VwsEmployee> VwsEmployees { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<VwsPayrollHeader>().ToTable("vwsPayrollHeader");
             modelBuilder.Entity<VwsEmployee>().ToTable("vwsEmployees");
+            modelBuilder.Entity<Employee>().ToTable("Employees");
         }
     }
 }

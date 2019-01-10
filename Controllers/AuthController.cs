@@ -42,7 +42,7 @@ namespace payroll.Controllers
                 return BadRequest(ModelState);
             }
 
-            var identity = await GetClaimsIdentity(credentials.UserName, credentials.Password);
+            var identity = await GetClaimsIdentity(credentials.EmployeeNo, credentials.Password);
             if (identity == null)
             {
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
@@ -52,7 +52,7 @@ namespace payroll.Controllers
             var response = new
             {
                 id=identity.Claims.Single(c=>c.Type=="id").Value,
-                auth_token = await _jwtFactory.GenerateEncodedToken(credentials.UserName, identity),
+                auth_token = await _jwtFactory.GenerateEncodedToken(credentials.EmployeeNo, identity),
                 expires_in = (int)_jwtOptions.ValidFor.TotalSeconds
             };
 
