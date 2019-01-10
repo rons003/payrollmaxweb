@@ -45,6 +45,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { Service } from './core/services/api.client.generated';
 
 import { MswnavbarComponent } from './views/mswnavbar/mswnavbar.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -60,7 +61,8 @@ import { MswnavbarComponent } from './views/mswnavbar/mswnavbar.component';
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   declarations: [
     AppComponent,
