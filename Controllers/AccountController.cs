@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using payroll.Models;
 using payroll.ViewModels;
 using payroll.Helpers;
+using System;
 
 namespace payroll.Controllers
 {
@@ -35,7 +36,7 @@ namespace payroll.Controllers
             var employeeValidate = _appDbContext.VwsEmployees
                 .Where(e => e.EmployeeNo == model.UserName)
                 .Where(e => e.MiddleInitial == model.MiddleInitial + '.')
-                .Where(e => e.Birthday == model.Birthday)
+                .Where(e => e.Birthday == DateTime.Parse(model.Birthday))
                 .FirstOrDefault();
 
             if (employeeValidate != null)

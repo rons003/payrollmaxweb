@@ -33,6 +33,7 @@ export class Service {
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
+        console.log(content_);
 
         let options_ : any = {
             body: content_,
@@ -297,10 +298,11 @@ export class Service {
 }
 
 export class RegistrationViewModel implements IRegistrationViewModel {
+    userName?: string | undefined;
+    birthday?: string | undefined;
+    middleInitial?: string | undefined;
     email?: string | undefined;
     password?: string | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
 
     constructor(data?: IRegistrationViewModel) {
         if (data) {
@@ -313,10 +315,11 @@ export class RegistrationViewModel implements IRegistrationViewModel {
 
     init(data?: any) {
         if (data) {
+            this.userName = data["userName"];
+            this.birthday = data["birthday"];
+            this.middleInitial = data["middleInitial"];
             this.email = data["email"];
             this.password = data["password"];
-            this.firstName = data["firstName"];
-            this.lastName = data["lastName"];
         }
     }
 
@@ -329,19 +332,21 @@ export class RegistrationViewModel implements IRegistrationViewModel {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["userName"] = this.userName;
+        data["birthday"] = this.birthday;
+        data["middleInitial"] = this.middleInitial;
         data["email"] = this.email;
         data["password"] = this.password;
-        data["firstName"] = this.firstName;
-        data["lastName"] = this.lastName;
         return data; 
     }
 }
 
 export interface IRegistrationViewModel {
+    userName?: string | undefined;
+    birthday?: string | undefined;
+    middleInitial?: string | undefined;
     email?: string | undefined;
     password?: string | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
 }
 
 export class CredentialsViewModel implements ICredentialsViewModel {
@@ -392,6 +397,7 @@ export class VwsEmployee implements IVwsEmployee {
     middleInitial?: string | undefined;
     suffixName?: string | undefined;
     employeeName?: string | undefined;
+    birthday?: Date | undefined;
 
     constructor(data?: IVwsEmployee) {
         if (data) {
@@ -411,6 +417,7 @@ export class VwsEmployee implements IVwsEmployee {
             this.middleInitial = data["middleInitial"];
             this.suffixName = data["suffixName"];
             this.employeeName = data["employeeName"];
+            this.birthday = data["birthday"] ? new Date(data["birthday"].toString()) : <any>undefined;
         }
     }
 
@@ -430,6 +437,7 @@ export class VwsEmployee implements IVwsEmployee {
         data["middleInitial"] = this.middleInitial;
         data["suffixName"] = this.suffixName;
         data["employeeName"] = this.employeeName;
+        data["birthday"] = this.birthday ? this.birthday.toISOString() : <any>undefined;
         return data; 
     }
 }
@@ -442,6 +450,7 @@ export interface IVwsEmployee {
     middleInitial?: string | undefined;
     suffixName?: string | undefined;
     employeeName?: string | undefined;
+    birthday?: Date | undefined;
 }
 
 export class VwsPayrollHeader implements IVwsPayrollHeader {
