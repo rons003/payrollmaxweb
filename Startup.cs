@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Logging;
+using payroll.Data;
 
 namespace payroll
 {
@@ -92,7 +93,7 @@ namespace payroll
             });
 
             // add identity
-            var builder = services.AddIdentityCore<AppUser>(o =>
+            var builder = services.AddIdentity<AppUser, IdentityRole>(o =>
             {
                 // configure identity options
                 o.Password.RequireDigit = false;
@@ -134,7 +135,7 @@ namespace payroll
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider services)
         {
             if (env.IsDevelopment())
             {
@@ -170,6 +171,8 @@ namespace payroll
                     template: "{controller}/{action=Index}/{id?}");
             });
 
+            Seed.CreateRoles(services, Configuration).Wait();
+
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
@@ -182,6 +185,7 @@ namespace payroll
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
         }
     }
 }

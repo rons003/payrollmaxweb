@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
-import { Service } from './api.client.generated';
+import { Service } from '../../core/services/api.client.generated';
 
 @Injectable()
 export class AuthService {

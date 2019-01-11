@@ -48,11 +48,19 @@ namespace payroll.Controllers
 
                     var result = await _userManager.CreateAsync(userIdentity, model.Password);
 
-                    if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
-                    
-                    await _appDbContext.SaveChangesAsync();
+                    if (result.Succeeded)
+                    {
+                        // here we assign the new user the "Admin" role 
+                        await _userManager.AddToRoleAsync(userIdentity, "Employee");
+                        await _appDbContext.SaveChangesAsync();
+                        return new OkObjectResult("Account created");
+                    }
+                    else
+                    {
+                        return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+                    }
 
-                    return new OkObjectResult("Account created");
+
                 }
                 else
                 {
