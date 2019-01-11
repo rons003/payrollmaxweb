@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Service, VwsEmployee, VwsPayrollHeader } from '../../../core/services/api.client.generated';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-period',
@@ -25,10 +26,15 @@ export class PeriodComponent implements OnInit {
   }
 
   getPayrollHeader(empno: string) {
+    // Swal({
+    //   title: 'Fetching Data...'
+    // });
+    Swal.showLoading();
     this.apiService.getPayrollPeriod(Number(empno))
       .subscribe(
         response => {
           this.payrollPeriods = response;
+          Swal.close();
         }
       );
   }
@@ -38,6 +44,7 @@ export class PeriodComponent implements OnInit {
   }
 
   getEmployee(empno: string) {
+    this.employee = new VwsEmployee();
     this.apiService.getVwsEmployee(empno)
       .subscribe(
         (res: any) => {

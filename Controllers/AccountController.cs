@@ -33,28 +33,33 @@ namespace payroll.Controllers
             }
 
             var employeeValidate = _appDbContext.VwsEmployees
-                .Where(e => e.EmployeeNo == model.EmployeeNo)
+                .Where(e => e.EmployeeNo == model.UserName)
                 .Where(e => e.MiddleInitial == model.MiddleInitial + '.')
                 .Where(e => e.Birthday == model.Birthday)
                 .FirstOrDefault();
 
             if (employeeValidate != null)
             {
-                var userIdentity = _mapper.Map<AppUser>(model);
+                var user = await _userManager.FindByNameAsync(model.UserName);
+                if (user == null)
+                {
+                    var userIdentity = _mapper.Map<AppUser>(model);
 
-                var result = await _userManager.CreateAsync(userIdentity, model.Password);
+                    var result = await _userManager.CreateAsync(userIdentity, model.Password);
 
-                if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+                    if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+                    
+                    await _appDbContext.SaveChangesAsync();
 
-                // await _appDbContext.Employee.AddAsync(
-                //     new Employee { 
-                //         IdentityId = userIdentity.Id, 
-                //         Firstname = model.FirstName
-                //         });
-                await _appDbContext.SaveChangesAsync();
-
-                return new OkObjectResult("Account created");
-            } else {
+                    return new OkObjectResult("Account created");
+                }
+                else
+                {
+                    return new OkObjectResult("Employee Number is already exist!");
+                }
+            }
+            else
+            {
                 return new OkObjectResult("Information is not Matching...");
             }
 

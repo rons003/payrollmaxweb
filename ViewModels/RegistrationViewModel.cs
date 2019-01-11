@@ -7,7 +7,7 @@ namespace payroll.ViewModels
 {
     public class RegistrationViewModel
     {
-        public string EmployeeNo { get; set; }
+        public string UserName { get; set; }
         public DateTime Birthday { get; set; }
         public string MiddleInitial { get; set; }
         public string Email { get; set; }

@@ -3,7 +3,7 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header">
-          <i class="fa fa-align-justify"></i> Payroll Periods
+            <i class="cui-calendar icons"></i> Payroll Periods
         </div>
         <div class="card-body">
           <div class="row">
@@ -20,7 +20,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <div class="form-group">
                 <label class="col-form-label">Employee Name</label>
                 <input type="text" class="form-control" id="name" [(ngModel)]="employee.employeeName" disabled>
@@ -41,8 +41,8 @@
             <tbody>
               <tr *ngFor="let payrollHead of payrollPeriods">
                 <td>{{ payrollHead.payrollPeriod }}</td>
-                <td>{{ payrollHead.netPay }}</td>
-                <td><button class="btn btn-link" type="button" (click)="viewReport(payrollHead.employeeNo,payrollHead.payrollPeriod)">View</button></td>
+                <td><i class="cui-dollar icons"></i> {{ payrollHead.netPay }}</td>
+                <td><button class="btn btn-link btn-sm" type="button" (click)="viewReport(payrollHead.employeeNo,payrollHead.payrollPeriod)">View</button></td>
               </tr>
             </tbody>
           </table>

@@ -5,6 +5,5 @@ namespace payroll.Models
     public class AppUser : IdentityUser
     {
         // Extended Properties
-        public string EmployeeNo { get; set; }
     }
 }

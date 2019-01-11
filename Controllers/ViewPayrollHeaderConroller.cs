@@ -29,6 +29,7 @@ namespace payroll.Controllers
                 .Where(pp => pp.Validated == "Y")
                 .Select(
                     pp => new VwsPayrollHeader() {
+                        EmployeeNo = pp.EmployeeNo,
                         PayrollPeriod = pp.PayrollPeriod,
                         NetPay = pp.NetPay
                     }
