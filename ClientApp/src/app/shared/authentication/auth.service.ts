@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
-import { Service } from '../../core/services/api.client.generated';
+import { Service, VwsEmployee } from '../../core/services/api.client.generated';
 
 @Injectable()
 export class AuthService {
     constructor() {
     }
 
-    // logout() {
-    //     this.user = null;
-    //     this.clearCurrentUser();
-    // }
+    logout() {
+        // this.user = null;
+        this.clearCurrentUser();
+    }
 
     // updateActiveUser(user: User) {
     //     const token = this.getCurrentUser().token;
@@ -22,9 +22,9 @@ export class AuthService {
     //     return this.userService.changePassword(user.id, oldPassword, newPassword);
     // }
 
-    // saveCurrentUser(token: any, user: User) {
-    //     localStorage.setItem('currentUser', JSON.stringify({ token: token, user: user }));
-    // }
+    saveCurrentUser(token: any, role: any, user: VwsEmployee) {
+        localStorage.setItem('currentUser', JSON.stringify({ token: token, role: role, user: user }));
+    }
 
     getCurrentUser() {
         return JSON.parse(localStorage.getItem('currentUser'));
@@ -39,37 +39,20 @@ export class AuthService {
         return data && data.token;
     }
 
-    isActiveUserStudent(): boolean {
-        if (this.getCurrentUser()) {
-            const user = this.getCurrentUser().user;
-            return user && user.userType === 0;
-        } else {
-            return false;
-        }
-    }
-
-    isActiveUserTeacher(): boolean {
-        if (this.getCurrentUser()) {
-            const user = this.getCurrentUser().user;
-            return user && user.userType === 1;
-        } else {
-            return false;
-        }
-    }
-
-    isActiveUserAdmin(): boolean {
-        if (this.getCurrentUser()) {
-            const user = this.getCurrentUser().user;
-            return user && user.userType === 2;
-        } else {
-            return false;
-        }
-    }
 
     isActiveUserSuperAdmin(): boolean {
         if (this.getCurrentUser()) {
-            const user = this.getCurrentUser().user;
-            return user && user.userType === 3;
+            const role = this.getCurrentUser().role;
+            return role && role === 'Admin' ;
+        } else {
+            return false;
+        }
+    }
+
+    isActiveUserEmployee(): boolean {
+        if (this.getCurrentUser()) {
+            const role = this.getCurrentUser().role;
+            return role && role === 'Employee' ;
         } else {
             return false;
         }

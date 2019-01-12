@@ -53,23 +53,39 @@ namespace payroll.Controllers
                         // here we assign the new user the "Admin" role 
                         await _userManager.AddToRoleAsync(userIdentity, "Employee");
                         await _appDbContext.SaveChangesAsync();
-                        return new OkObjectResult("Account created");
+                        return new OkObjectResult(
+                        new { 
+                            result = "success",
+                            message = "Account has successfully created!"
+                        });
                     }
                     else
                     {
-                        return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+                        return new OkObjectResult(
+                        new { 
+                            result = "badrequest",
+                            message = "Something problem"
+                        });
                     }
 
 
                 }
                 else
                 {
-                    return new OkObjectResult("Employee Number is already exist!");
+                    return new OkObjectResult(
+                        new { 
+                            result = "failed",
+                            message = "Employee Number is already exists!"
+                        });
                 }
             }
             else
             {
-                return new OkObjectResult("Information is not Matching...");
+                return new OkObjectResult(
+                        new { 
+                            result = "failed",
+                            message = "Invalid informations request..."
+                        });
             }
 
         }

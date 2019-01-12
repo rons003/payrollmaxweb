@@ -34,14 +34,20 @@ namespace payroll.Controllers
             var vwsEmployee = await _context.VwsEmployees
                 .Where(e => e.EmployeeNo == id)
                 .Select(
-                    e => new VwsEmployee() {
+                    e => new VwsEmployee()
+                    {
                         EmployeeName = e.EmployeeName
                     }
                 ).FirstOrDefaultAsync();
 
             if (vwsEmployee == null)
             {
-                return NotFound();
+                return Ok(
+                    new
+                    {
+                        result = "success",
+                        message = "Employee Not Found!"
+                    });
             }
 
             return vwsEmployee;

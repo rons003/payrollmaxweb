@@ -43,6 +43,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 // Services
 import { Service } from './core/services/api.client.generated';
+import { AuthService } from './shared/authentication/auth.service';
 
 import { MswnavbarComponent } from './views/mswnavbar/mswnavbar.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -74,7 +75,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     MswnavbarComponent
   ],
   providers: [
-    Service
+    Service, AuthService
   ],
   bootstrap: [AppComponent]
 })

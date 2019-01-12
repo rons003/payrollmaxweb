@@ -10,7 +10,7 @@ export class AdminGuard implements CanActivate {
 
     canActivate() {
         // If the user is not an admin, we'll send them back to the home page
-        if (!this.auth.isActiveUserSuperAdmin()) {
+        if (!this.auth.isActiveUserEmployee()) {
             this.router.navigate(['']);
             return false;
         }

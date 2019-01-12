@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using payroll.Helpers;
 using System.Security.Claims;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace payroll.Controllers
 {
@@ -19,8 +21,9 @@ namespace payroll.Controllers
         private readonly IJwtFactory _jwtFactory;
         private readonly JsonSerializerSettings _serializerSettings;
         private readonly JwtIssuerOptions _jwtOptions;
+        private readonly IntegraDbContext _context;
 
-        public AuthController(UserManager<AppUser> userManager, IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
+        public AuthController(UserManager<AppUser> userManager, IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions, IntegraDbContext context)
         {
             _userManager = userManager;
             _jwtFactory = jwtFactory;
@@ -30,12 +33,13 @@ namespace payroll.Controllers
             {
                 Formatting = Formatting.Indented
             };
+            _context = context;
         }
 
 
         // POST api/auth/login
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]CredentialsViewModel credentials)
+        public async Task<ActionResult<ResultReponser>> Login([FromBody]CredentialsViewModel credentials)
         {
             if (!ModelState.IsValid)
             {
@@ -43,21 +47,44 @@ namespace payroll.Controllers
             }
 
             var identity = await GetClaimsIdentity(credentials.UserName, credentials.Password);
-            if (identity == null)
+            if (identity != null)
             {
-                return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
+                var vwsEmployee = await _context.VwsEmployees
+                    .Where(e => e.EmployeeNo == credentials.UserName)
+                    .FirstOrDefaultAsync();
+                // Serialize and return the response
+                var user = await _userManager.FindByIdAsync(identity.Claims.Single(c => c.Type == "id").Value);
+                var roles = await _userManager.GetRolesAsync(user);
+
+                var auth_data = new
+                {
+                    id = identity.Claims.Single(c => c.Type == "id").Value,
+                    auth_token = await _jwtFactory.GenerateEncodedToken(credentials.UserName, identity),
+                    expires_in = (int)_jwtOptions.ValidFor.TotalSeconds,
+                    employee_info = vwsEmployee,
+                    role = roles
+                };
+                var json = JsonConvert.SerializeObject(auth_data, _serializerSettings);
+
+                var response = new ResultReponser
+                {
+                    Result = "success",
+                    Message = "Authenticated",
+                    ResponseData = json
+                };
+                return response;
+
             }
-
-            // Serialize and return the response
-            var response = new
+            else
             {
-                id=identity.Claims.Single(c=>c.Type=="id").Value,
-                auth_token = await _jwtFactory.GenerateEncodedToken(credentials.UserName, identity),
-                expires_in = (int)_jwtOptions.ValidFor.TotalSeconds
-            };
-
-            var json = JsonConvert.SerializeObject(response, _serializerSettings);
-            return new OkObjectResult(json);
+                var response = new ResultReponser
+                {
+                    Result = "failed",
+                    Message = "Unauthenticate",
+                    ResponseData = ""
+                };
+                return response;
+            }
         }
 
         private async Task<ClaimsIdentity> GetClaimsIdentity(string userName, string password)
