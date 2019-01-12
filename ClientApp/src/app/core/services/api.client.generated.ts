@@ -123,9 +123,6 @@ export class Service {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = resultData200 ? ResultReponser.fromJS(resultData200) : new ResultReponser();
-                if (result200.result == 'success') {
-                    this.authService.saveCurrentUser(result200.responseData['auth_token'], result200.responseData['role'] ,result200.responseData['employee_info']);
-                }
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {

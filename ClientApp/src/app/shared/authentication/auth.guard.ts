@@ -4,13 +4,13 @@ import { Router, CanActivate } from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Injectable()
-export class EmployeeGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
 
     constructor(private auth: AuthService, private router: Router) { }
 
     canActivate() {
-        // If the user is not an employee, we'll send them back to the home page
-        if (!this.auth.isActiveUserEmployee()) {
+        // If the user is not an admin, we'll send them back to the home page
+        if (!this.auth.isAuthenticated()) {
             this.router.navigate(['login']);
             return false;
         }

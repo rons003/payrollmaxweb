@@ -41,11 +41,6 @@ namespace payroll.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<ResultReponser>> Login([FromBody]CredentialsViewModel credentials)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var identity = await GetClaimsIdentity(credentials.UserName, credentials.Password);
             if (identity != null)
             {
@@ -64,13 +59,13 @@ namespace payroll.Controllers
                     employee_info = vwsEmployee,
                     role = roles
                 };
-                var json = JsonConvert.SerializeObject(auth_data, _serializerSettings);
+                // var json = JsonConvert.SerializeObject(auth_data, _serializerSettings);
 
                 var response = new ResultReponser
                 {
                     Result = "success",
                     Message = "Authenticated",
-                    ResponseData = json
+                    ResponseData = auth_data
                 };
                 return response;
 

@@ -39,11 +39,15 @@ export class AuthService {
         return data && data.token;
     }
 
+    isAuthenticated() {
+        const data = this.getCurrentUser();
+        return data && data.token;
+    }
 
     isActiveUserSuperAdmin(): boolean {
         if (this.getCurrentUser()) {
             const role = this.getCurrentUser().role;
-            return role && role === 'Admin' ;
+            return role && role[0] === 'Admin';
         } else {
             return false;
         }
@@ -52,7 +56,7 @@ export class AuthService {
     isActiveUserEmployee(): boolean {
         if (this.getCurrentUser()) {
             const role = this.getCurrentUser().role;
-            return role && role === 'Employee' ;
+            return role && role[0] === 'Employee';
         } else {
             return false;
         }

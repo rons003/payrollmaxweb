@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Service, VwsEmployee, VwsPayrollHeader } from '../../../core/services/api.client.generated';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../shared/authentication/auth.service';
 
 @Component({
   selector: 'app-period',
@@ -12,7 +13,8 @@ export class PeriodComponent implements OnInit {
   private payrollPeriods: VwsPayrollHeader[];
   private employee: VwsEmployee;
   constructor(
-    private apiService: Service
+    private apiService: Service,
+    private authService: AuthService
   ) {
     this.employee = new VwsEmployee();
   }

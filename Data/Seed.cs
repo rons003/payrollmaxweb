@@ -38,13 +38,17 @@ namespace payroll.Data
             string UserPassword = Configuration.GetSection("UserSettings")["UserPassword"];
             var _user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["UserEmail"]);
 
-            if (poweruser == null)
+            if (poweruser != null)
             {
-                var createPowerUser = await UserManager.CreateAsync(poweruser, UserPassword);
-                if (createPowerUser.Succeeded)
+                var user = await UserManager.FindByNameAsync(poweruser.UserName);
+                if (user == null)
                 {
-                    // here we assign the new user the "Admin" role 
-                    await UserManager.AddToRoleAsync(poweruser, "Admin");
+                    var createPowerUser = await UserManager.CreateAsync(poweruser, UserPassword);
+                    if (createPowerUser.Succeeded)
+                    {
+                        // here we assign the new user the "Admin" role 
+                        await UserManager.AddToRoleAsync(poweruser, "Admin");
+                    }
                 }
             }
         }
