@@ -50,7 +50,6 @@ namespace payroll.Controllers
                 // Serialize and return the response
                 var user = await _userManager.FindByIdAsync(identity.Claims.Single(c => c.Type == "id").Value);
                 var roles = await _userManager.GetRolesAsync(user);
-
                 var auth_data = new
                 {
                     id = identity.Claims.Single(c => c.Type == "id").Value,

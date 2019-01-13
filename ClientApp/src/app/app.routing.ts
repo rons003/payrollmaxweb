@@ -15,7 +15,7 @@ import { AuthGuard } from './shared/authentication/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'reports',
     canActivate: [AuthGuard],
     pathMatch: 'full',
   },
@@ -94,6 +94,10 @@ export const routes: Routes = [
       {
         path: 'reports',
         loadChildren: './views/reports/reports.module#ReportsModule'
+      },
+      {
+        path: 'profile',
+        loadChildren: './views/profile/profile.module#ProfileModule'
       }
     ]
   }
