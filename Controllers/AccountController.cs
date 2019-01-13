@@ -26,7 +26,7 @@ namespace payroll.Controllers
 
         // POST api/accounts
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody]RegistrationViewModel model)
+        public async Task<ActionResult<ResultReponser>> Register([FromBody]RegistrationViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -53,39 +53,43 @@ namespace payroll.Controllers
                         // here we assign the new user the "Admin" role 
                         await _userManager.AddToRoleAsync(userIdentity, "Employee");
                         await _appDbContext.SaveChangesAsync();
-                        return new OkObjectResult(
-                        new { 
-                            result = "success",
-                            message = "Account has successfully created!"
-                        });
+                        return new ResultReponser
+                        {
+                            Result = "success",
+                            Message = "Account has successfully created!",
+                            ResponseData = ""
+                        };
                     }
                     else
                     {
-                        return new OkObjectResult(
-                        new { 
-                            result = "badrequest",
-                            message = "Something problem"
-                        });
+                        return new ResultReponser
+                        {
+                            Result = "badrequest",
+                            Message = "Something Problem!",
+                            ResponseData = ""
+                        };
                     }
 
 
                 }
                 else
                 {
-                    return new OkObjectResult(
-                        new { 
-                            result = "failed",
-                            message = "Employee Number is already exists!"
-                        });
+                    return new ResultReponser
+                        {
+                            Result = "failed",
+                            Message = "Employee Number is Already Exist!",
+                            ResponseData = ""
+                        };
                 }
             }
             else
             {
-                return new OkObjectResult(
-                        new { 
-                            result = "failed",
-                            message = "Invalid informations request..."
-                        });
+                return new ResultReponser
+                        {
+                            Result = "failed",
+                            Message = "Invalid information request if you may have a concern please contact to our HR.",
+                            ResponseData = ""
+                        };
             }
 
         }

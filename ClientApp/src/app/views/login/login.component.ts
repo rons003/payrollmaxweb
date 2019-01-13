@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Service, CredentialsViewModel } from '../../core/services/api.client.generated';
 import { AuthService } from '../../shared/authentication/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,7 +31,17 @@ export class LoginComponent {
               response.responseData['employee_info']
             );
             this.router.navigate(['/reports']);
-            // console.log(this.authService.getCurrentUser());
+            const toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            toast({
+              type: 'success',
+              title: 'Signed in successfully'
+            });
           } else {
             console.log(response.message);
           }

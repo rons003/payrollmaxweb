@@ -20,6 +20,10 @@ export class PeriodComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.authService.isActiveUserEmployee()) {
+      const empno = this.authService.getCurrentUser().user.employeeNo;
+      this.getPayrollHeader(empno);
+    }
   }
 
   searchEmployee(empno: string) {
