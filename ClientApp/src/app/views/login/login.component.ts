@@ -12,7 +12,8 @@ import Swal from 'sweetalert2';
 export class LoginComponent {
 
   private credentials: CredentialsViewModel;
-
+  alertValidation = false;
+  alertMessage = '';
   constructor(
     private apiService: Service,
     private router: Router, private authService: AuthService
@@ -25,6 +26,7 @@ export class LoginComponent {
       .subscribe(
         response => {
           if (response.result === 'success') {
+            this.alertValidation = false;
             this.authService.saveCurrentUser(
               response.responseData['auth_token'],
               response.responseData['role'],
@@ -43,7 +45,8 @@ export class LoginComponent {
               title: 'Signed in successfully'
             });
           } else {
-            console.log(response.message);
+            this.alertMessage = response.message;
+            this.alertValidation = true;
           }
         }
       );

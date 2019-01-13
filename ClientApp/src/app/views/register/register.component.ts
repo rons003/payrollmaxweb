@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Service, RegistrationViewModel } from '../../core/services/api.client.generated';
+import { Service, RegistrationViewModel, CredentialsViewModel } from '../../core/services/api.client.generated';
+import { AuthService } from '../../shared/authentication/auth.service';
 import {
   FormGroup,
   FormBuilder,
@@ -7,6 +8,8 @@ import {
   FormControl
 } from '@angular/forms';
 import { ConfirmPasswordValidator } from './confirm-password.validator';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +20,12 @@ export class RegisterComponent implements OnInit {
   formreg: FormGroup;
   alertValidation = false;
   alertMessage = '';
-  constructor(private apiService: Service, private formBuilder: FormBuilder) {
+  constructor(
+    private apiService: Service,
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
   }
 
   ngOnInit() {
@@ -51,11 +59,39 @@ export class RegisterComponent implements OnInit {
         response => {
           if (response.result === 'success') {
             this.alertValidation = false;
+            this.login(registration.userName, registration.password);
           } else {
-            console.log(response.message);
             this.alertMessage = response.message;
             this.alertValidation = true;
           }
+        }
+      );
+  }
+
+  login(username: string, password: string) {
+    const credentials = new CredentialsViewModel();
+    credentials.userName = username;
+    credentials.password = password;
+    this.apiService.login(credentials)
+      .subscribe(
+        response => {
+          this.authService.saveCurrentUser(
+            response.responseData['auth_token'],
+            response.responseData['role'],
+            response.responseData['employee_info']
+          );
+          this.router.navigate(['/reports']);
+          const toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          toast({
+            type: 'success',
+            title: 'Signed in successfully'
+          });
         }
       );
   }

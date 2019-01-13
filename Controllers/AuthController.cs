@@ -75,7 +75,7 @@ namespace payroll.Controllers
                 var response = new ResultReponser
                 {
                     Result = "failed",
-                    Message = "Unauthenticate",
+                    Message = "Incorrect employee number or password.",
                     ResponseData = ""
                 };
                 return response;
