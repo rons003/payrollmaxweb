@@ -75,21 +75,21 @@ namespace payroll.Controllers
                 else
                 {
                     return new ResultReponser
-                        {
-                            Result = "failed",
-                            Message = "Employee Number is Already Exist!",
-                            ResponseData = ""
-                        };
+                    {
+                        Result = "failed",
+                        Message = "Employee Number is Already Exist!",
+                        ResponseData = ""
+                    };
                 }
             }
             else
             {
                 return new ResultReponser
-                        {
-                            Result = "failed",
-                            Message = "Invalid information request if you may have a concern please contact to our HR.",
-                            ResponseData = ""
-                        };
+                {
+                    Result = "failed",
+                    Message = "Invalid information request if you may have a concern please contact to our HR.",
+                    ResponseData = ""
+                };
             }
 
         }
