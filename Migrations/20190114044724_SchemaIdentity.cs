@@ -185,31 +185,31 @@ namespace payroll.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    IdentityId = table.Column<string>(nullable: true),
-                    Lastname = table.Column<string>(nullable: true),
-                    Firstname = table.Column<string>(nullable: true),
-                    Middlename = table.Column<string>(nullable: true),
-                    ContactNumber = table.Column<int>(nullable: false),
-                    Email = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    Gender = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Employees_AspNetUsers_IdentityId",
-                        column: x => x.IdentityId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+            // migrationBuilder.CreateTable(
+            //     name: "Employees",
+            //     columns: table => new
+            //     {
+            //         Id = table.Column<int>(nullable: false)
+            //             .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+            //         IdentityId = table.Column<string>(nullable: true),
+            //         Lastname = table.Column<string>(nullable: true),
+            //         Firstname = table.Column<string>(nullable: true),
+            //         Middlename = table.Column<string>(nullable: true),
+            //         ContactNumber = table.Column<int>(nullable: false),
+            //         Email = table.Column<string>(nullable: true),
+            //         Address = table.Column<string>(nullable: true),
+            //         Gender = table.Column<string>(nullable: true)
+            //     },
+            //     constraints: table =>
+            //     {
+            //         table.PrimaryKey("PK_Employees", x => x.Id);
+            //         table.ForeignKey(
+            //             name: "FK_Employees_AspNetUsers_IdentityId",
+            //             column: x => x.IdentityId,
+            //             principalTable: "AspNetUsers",
+            //             principalColumn: "Id",
+            //             onDelete: ReferentialAction.Restrict);
+            //     });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -273,14 +273,14 @@ namespace payroll.Migrations
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
 
-            migrationBuilder.DropTable(
-                name: "Employees");
+            // migrationBuilder.DropTable(
+            //     name: "Employees");
 
-            migrationBuilder.DropTable(
-                name: "vwsEmployees");
+            // migrationBuilder.DropTable(
+            //     name: "vwsEmployees");
 
-            migrationBuilder.DropTable(
-                name: "vwsPayrollHeader");
+            // migrationBuilder.DropTable(
+            //     name: "vwsPayrollHeader");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
