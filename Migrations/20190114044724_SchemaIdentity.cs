@@ -47,37 +47,37 @@ namespace payroll.Migrations
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "vwsEmployees",
-                columns: table => new
-                {
-                    EmployeeNo = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    MiddleName = table.Column<string>(nullable: true),
-                    MiddleInitial = table.Column<string>(nullable: true),
-                    SuffixName = table.Column<string>(nullable: true),
-                    EmployeeName = table.Column<string>(nullable: true),
-                    Birthday = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_vwsEmployees", x => x.EmployeeNo);
-                });
+            // migrationBuilder.CreateTable(
+            //     name: "vwsEmployees",
+            //     columns: table => new
+            //     {
+            //         EmployeeNo = table.Column<string>(nullable: false),
+            //         LastName = table.Column<string>(nullable: true),
+            //         FirstName = table.Column<string>(nullable: true),
+            //         MiddleName = table.Column<string>(nullable: true),
+            //         MiddleInitial = table.Column<string>(nullable: true),
+            //         SuffixName = table.Column<string>(nullable: true),
+            //         EmployeeName = table.Column<string>(nullable: true),
+            //         Birthday = table.Column<DateTime>(nullable: false)
+            //     },
+            //     constraints: table =>
+            //     {
+            //         table.PrimaryKey("PK_vwsEmployees", x => x.EmployeeNo);
+            //     });
 
-            migrationBuilder.CreateTable(
-                name: "vwsPayrollHeader",
-                columns: table => new
-                {
-                    EmployeeNo = table.Column<string>(nullable: false),
-                    PayrollPeriod = table.Column<string>(nullable: true),
-                    NetPay = table.Column<decimal>(nullable: true),
-                    Validated = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_vwsPayrollHeader", x => x.EmployeeNo);
-                });
+            // migrationBuilder.CreateTable(
+            //     name: "vwsPayrollHeader",
+            //     columns: table => new
+            //     {
+            //         EmployeeNo = table.Column<string>(nullable: false),
+            //         PayrollPeriod = table.Column<string>(nullable: true),
+            //         NetPay = table.Column<decimal>(nullable: true),
+            //         Validated = table.Column<string>(nullable: true)
+            //     },
+            //     constraints: table =>
+            //     {
+            //         table.PrimaryKey("PK_vwsPayrollHeader", x => x.EmployeeNo);
+            //     });
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
