@@ -10,8 +10,8 @@ using payroll.Models;
 namespace payroll.Migrations
 {
     [DbContext(typeof(IntegraDbContext))]
-    [Migration("20190110073304_TestSchema")]
-    partial class TestSchema
+    [Migration("20190114044724_SchemaIdentity")]
+    partial class SchemaIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -146,8 +146,6 @@ namespace payroll.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("EmployeeNo");
-
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -217,6 +215,8 @@ namespace payroll.Migrations
                 {
                     b.Property<string>("EmployeeNo")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Birthday");
 
                     b.Property<string>("EmployeeName");
 

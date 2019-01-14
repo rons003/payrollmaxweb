@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace payroll.Migrations
 {
-    public partial class TestSchema : Migration
+    public partial class SchemaIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,8 +40,7 @@ namespace payroll.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    EmployeeNo = table.Column<string>(nullable: true)
+                    AccessFailedCount = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -58,7 +57,8 @@ namespace payroll.Migrations
                     MiddleName = table.Column<string>(nullable: true),
                     MiddleInitial = table.Column<string>(nullable: true),
                     SuffixName = table.Column<string>(nullable: true),
-                    EmployeeName = table.Column<string>(nullable: true)
+                    EmployeeName = table.Column<string>(nullable: true),
+                    Birthday = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
