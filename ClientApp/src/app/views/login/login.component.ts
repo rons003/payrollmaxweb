@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
   templateUrl: 'login.component.html'
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   private credentials: CredentialsViewModel;
   alertValidation = false;
@@ -19,6 +19,12 @@ export class LoginComponent {
     private router: Router, private authService: AuthService
   ) {
     this.credentials = new CredentialsViewModel();
+  }
+
+  ngOnInit() {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['']);
+    }
   }
 
   login() {

@@ -29,6 +29,9 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['']);
+    }
     this.formreg = this.formBuilder.group({
       username: [null, [Validators.required, Validators.pattern('[0-9 ]*')]],
       middleinitial: [null, [Validators.required, Validators.maxLength(1), Validators.pattern('[a-zA-Z ]*')]],
