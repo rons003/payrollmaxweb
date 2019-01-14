@@ -180,74 +180,74 @@ namespace payroll.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("payroll.Models.Employee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            // modelBuilder.Entity("payroll.Models.Employee", b =>
+            //     {
+            //         b.Property<int>("Id")
+            //             .ValueGeneratedOnAdd()
+            //             .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address");
+            //         b.Property<string>("Address");
 
-                    b.Property<int>("ContactNumber");
+            //         b.Property<int>("ContactNumber");
 
-                    b.Property<string>("Email");
+            //         b.Property<string>("Email");
 
-                    b.Property<string>("Firstname");
+            //         b.Property<string>("Firstname");
 
-                    b.Property<string>("Gender");
+            //         b.Property<string>("Gender");
 
-                    b.Property<string>("IdentityId");
+            //         b.Property<string>("IdentityId");
 
-                    b.Property<string>("Lastname");
+            //         b.Property<string>("Lastname");
 
-                    b.Property<string>("Middlename");
+            //         b.Property<string>("Middlename");
 
-                    b.HasKey("Id");
+            //         b.HasKey("Id");
 
-                    b.HasIndex("IdentityId");
+            //         b.HasIndex("IdentityId");
 
-                    b.ToTable("Employees");
-                });
+            //         b.ToTable("Employees");
+            //     });
 
-            modelBuilder.Entity("payroll.Models.VwsEmployee", b =>
-                {
-                    b.Property<string>("EmployeeNo")
-                        .ValueGeneratedOnAdd();
+            // modelBuilder.Entity("payroll.Models.VwsEmployee", b =>
+            //     {
+            //         b.Property<string>("EmployeeNo")
+            //             .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Birthday");
+            //         b.Property<DateTime>("Birthday");
 
-                    b.Property<string>("EmployeeName");
+            //         b.Property<string>("EmployeeName");
 
-                    b.Property<string>("FirstName");
+            //         b.Property<string>("FirstName");
 
-                    b.Property<string>("LastName");
+            //         b.Property<string>("LastName");
 
-                    b.Property<string>("MiddleInitial");
+            //         b.Property<string>("MiddleInitial");
 
-                    b.Property<string>("MiddleName");
+            //         b.Property<string>("MiddleName");
 
-                    b.Property<string>("SuffixName");
+            //         b.Property<string>("SuffixName");
 
-                    b.HasKey("EmployeeNo");
+            //         b.HasKey("EmployeeNo");
 
-                    b.ToTable("vwsEmployees");
-                });
+            //         b.ToTable("vwsEmployees");
+            //     });
 
-            modelBuilder.Entity("payroll.Models.VwsPayrollHeader", b =>
-                {
-                    b.Property<string>("EmployeeNo")
-                        .ValueGeneratedOnAdd();
+            // modelBuilder.Entity("payroll.Models.VwsPayrollHeader", b =>
+            //     {
+            //         b.Property<string>("EmployeeNo")
+            //             .ValueGeneratedOnAdd();
 
-                    b.Property<decimal?>("NetPay");
+            //         b.Property<decimal?>("NetPay");
 
-                    b.Property<string>("PayrollPeriod");
+            //         b.Property<string>("PayrollPeriod");
 
-                    b.Property<string>("Validated");
+            //         b.Property<string>("Validated");
 
-                    b.HasKey("EmployeeNo");
+            //         b.HasKey("EmployeeNo");
 
-                    b.ToTable("vwsPayrollHeader");
-                });
+            //         b.ToTable("vwsPayrollHeader");
+            //     });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
