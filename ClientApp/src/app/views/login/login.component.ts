@@ -28,6 +28,7 @@ export class LoginComponent {
           if (response.result === 'success') {
             this.alertValidation = false;
             this.authService.saveCurrentUser(
+              response.responseData['id'],
               response.responseData['auth_token'],
               response.responseData['role'],
               response.responseData['employee_info']

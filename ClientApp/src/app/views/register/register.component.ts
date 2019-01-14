@@ -76,6 +76,7 @@ export class RegisterComponent implements OnInit {
       .subscribe(
         response => {
           this.authService.saveCurrentUser(
+            response.responseData['id'],
             response.responseData['auth_token'],
             response.responseData['role'],
             response.responseData['employee_info']

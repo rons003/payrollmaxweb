@@ -22,8 +22,8 @@ export class AuthService {
     //     return this.userService.changePassword(user.id, oldPassword, newPassword);
     // }
 
-    saveCurrentUser(token: any, role: any, user: VwsEmployee) {
-        localStorage.setItem('currentUser', JSON.stringify({ token: token, role: role, user: user }));
+    saveCurrentUser(userid: any, token: any, role: any, user: VwsEmployee) {
+        localStorage.setItem('currentUser', JSON.stringify({ userid: userid, token: token, role: role, user: user }));
     }
 
     getCurrentUser() {

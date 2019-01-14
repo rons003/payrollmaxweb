@@ -46,7 +46,7 @@ import { Service } from './core/services/api.client.generated';
 import { AuthService } from './shared/authentication/auth.service';
 
 import { MswnavbarComponent } from './views/mswnavbar/mswnavbar.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [

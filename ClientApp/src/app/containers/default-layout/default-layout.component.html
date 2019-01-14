@@ -38,7 +38,7 @@
         <ng-template [ngIf]="!authService.isActiveUserSuperAdmin()">
           <a class="dropdown-item" [routerLink]="['/profile']"><i class="fa fa-user"></i> Profile</a>
         </ng-template>
-        <a class="dropdown-item" href="#"><i class="fa fa-wrench"></i> Change Password</a>
+        <a class="dropdown-item" [routerLink]="['/changepassword']"><i class="fa fa-wrench"></i> Change Password</a>
         <!-- <a class="dropdown-item" href="#"><i class="fa fa-usd"></i> Payments<span class="badge badge-dark">42</span></a>
         <a class="dropdown-item" href="#"><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></a>
         <div class="divider"></div>
