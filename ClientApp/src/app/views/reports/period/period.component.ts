@@ -10,11 +10,11 @@ import { AuthService } from '../../../shared/authentication/auth.service';
 })
 export class PeriodComponent implements OnInit {
 
-  private payrollPeriods: VwsPayrollHeader[];
-  private employee: VwsEmployee;
+  payrollPeriods: VwsPayrollHeader[];
+  employee: VwsEmployee;
   constructor(
-    private apiService: Service,
-    private authService: AuthService
+    public apiService: Service,
+    public authService: AuthService
   ) {
     this.employee = new VwsEmployee();
   }

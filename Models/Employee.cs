@@ -6,8 +6,8 @@ namespace payroll.Models
     public partial class Employee
     {
         public int Id { get; set; }
-        // public string IdentityId { get; set; }   
-        // public AppUser Identity { get; set; }  // navigation property
+        public string IdentityId { get; set; }   
+        public AppUser Identity { get; set; }  // navigation property
         public string Lastname { get; set; }
         public string Firstname { get; set; }
         public string Middlename { get; set; }

@@ -10,7 +10,7 @@ export class EmployeeComponent implements OnInit {
   public primaryModal;
 
 
-  constructor(private apiService: Service) {
+  constructor(public apiService: Service) {
     // this.getEmployeeAll();
   }
 

@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 
 export class LoginComponent implements OnInit {
 
-  private credentials: CredentialsViewModel;
+  credentials: CredentialsViewModel;
   alertValidation = false;
   alertMessage = '';
   constructor(
