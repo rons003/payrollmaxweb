@@ -15,7 +15,7 @@ namespace payroll.Data
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
 
-            string[] roleNames = { "Admin", "HR", "Employee" };
+            string[] roleNames = { "Super Admin", "Admin", "HR", "Employee" };
             IdentityResult roleResult;
 
             foreach (var roleName in roleNames)

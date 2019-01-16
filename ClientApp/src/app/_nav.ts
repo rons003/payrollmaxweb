@@ -34,7 +34,7 @@ export const navItems = [
       {
         name: 'Payroll Period',
         url: '/reports',
-        icon: 'fa fa-dollar'
+        icon: 'fa fa-money'
       }
     ]
   },

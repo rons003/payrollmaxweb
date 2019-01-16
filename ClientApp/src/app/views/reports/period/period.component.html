@@ -43,7 +43,7 @@
             <tbody>
               <tr *ngFor="let payrollHead of payrollPeriods">
                 <td>{{ payrollHead.payrollPeriod }}</td>
-                <td>Php {{ payrollHead.netPay }}</td>
+                <td>Php {{ payrollHead.netPay | number }}</td>
                 <td><button class="btn btn-link btn-sm" type="button" (click)="viewReport(payrollHead.employeeNo,payrollHead.payrollPeriod)">View</button></td>
               </tr>
             </tbody>
