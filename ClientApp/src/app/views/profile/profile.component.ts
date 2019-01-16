@@ -13,18 +13,18 @@ import {
 export class ProfileComponent implements OnInit {
   formProfile: FormGroup;
   constructor(
-    private authService: AuthService,
-    private formBuilder: FormBuilder
+    public authService: AuthService,
+    public formBuilder: FormBuilder
   ) { }
 
   ngOnInit() {
     const authdata = this.authService.getCurrentUser();
 
     this.formProfile = this.formBuilder.group({
-      userType: authdata.role[0],
-      empNo: authdata.user.employeeNo,
-      empName: authdata.user.employeeName,
-      birthday: authdata.user.birthday
+      userType: [{ value: authdata.role[0], disabled: true }],
+      empNo: [{ value: authdata.user.employeeNo, disabled: true }],
+      empName: [{ value: authdata.user.employeeName, disabled: true }],
+      birthday: [{ value: authdata.user.birthday, disabled: true }]
     });
   }
 

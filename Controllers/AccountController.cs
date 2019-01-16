@@ -44,33 +44,44 @@ namespace payroll.Controllers
                 var user = await _userManager.FindByNameAsync(model.UserName);
                 if (user == null)
                 {
-                    var userIdentity = _mapper.Map<AppUser>(model);
-
-                    var result = await _userManager.CreateAsync(userIdentity, model.Password);
-
-                    if (result.Succeeded)
+                    var email = await _userManager.FindByEmailAsync(model.Email);
+                    if (email == null)
                     {
-                        // here we assign the new user the "Admin" role 
-                        await _userManager.AddToRoleAsync(userIdentity, "Employee");
-                        await _appDbContext.SaveChangesAsync();
-                        return new ResultReponser
+                        var userIdentity = _mapper.Map<AppUser>(model);
+
+                        var result = await _userManager.CreateAsync(userIdentity, model.Password);
+
+                        if (result.Succeeded)
                         {
-                            Result = "success",
-                            Message = "Account has successfully created!",
-                            ResponseData = ""
-                        };
+                            // here we assign the new user the "Admin" role 
+                            await _userManager.AddToRoleAsync(userIdentity, "Employee");
+                            await _appDbContext.SaveChangesAsync();
+                            return new ResultReponser
+                            {
+                                Result = "success",
+                                Message = "Account has successfully created!",
+                                ResponseData = ""
+                            };
+                        }
+                        else
+                        {
+                            return new ResultReponser
+                            {
+                                Result = "badrequest",
+                                Message = "Something Problem!",
+                                ResponseData = ""
+                            };
+                        }
                     }
                     else
                     {
                         return new ResultReponser
                         {
-                            Result = "badrequest",
-                            Message = "Something Problem!",
+                            Result = "failed",
+                            Message = "Email Address is Already used!",
                             ResponseData = ""
                         };
                     }
-
-
                 }
                 else
                 {
