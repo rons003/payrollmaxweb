@@ -3,6 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Service, CredentialsViewModel } from '../../core/services/api.client.generated';
 import { AuthService } from '../../shared/authentication/auth.service';
 import Swal from 'sweetalert2';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators
+} from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,14 +19,26 @@ export class LoginComponent implements OnInit {
   credentials: CredentialsViewModel;
   alertValidation = false;
   alertMessage = '';
+  primaryModal;
+  formForgot: FormGroup;
   constructor(
     private apiService: Service,
-    private router: Router, private authService: AuthService
+    private router: Router, private authService: AuthService,
+    private formBuilder: FormBuilder,
   ) {
     this.credentials = new CredentialsViewModel();
   }
 
   ngOnInit() {
+    this.formForgot = this.formBuilder.group({
+      employeeNo: [null, [Validators.required, Validators.pattern('[0-9 ]*')]],
+      lastname: [null, [Validators.required]],
+      birthday: [null, Validators.required],
+      questionOne: [null, Validators.required],
+      questionTwo: [null, Validators.required],
+      questionThree: [null, Validators.required]
+    }
+    );
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['']);
     }
@@ -57,5 +74,9 @@ export class LoginComponent implements OnInit {
           }
         }
       );
+  }
+
+  forgotPass() {
+
   }
 }

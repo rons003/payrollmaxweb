@@ -48,6 +48,9 @@ import { AuthService } from './shared/authentication/auth.service';
 import { MswnavbarComponent } from './views/mswnavbar/mswnavbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+// Modal Component
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -64,7 +67,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TabsModule.forRoot(),
     ChartsModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    ModalModule.forRoot()
   ],
   declarations: [
     AppComponent,
