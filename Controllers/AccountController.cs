@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
@@ -7,6 +8,7 @@ using payroll.Models;
 using payroll.ViewModels;
 using payroll.Helpers;
 using System;
+using System.Collections.Generic;
 
 namespace payroll.Controllers
 {
@@ -15,13 +17,35 @@ namespace payroll.Controllers
     {
         private readonly IntegraDbContext _appDbContext;
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
 
-        public AccountsController(UserManager<AppUser> userManager, IMapper mapper, IntegraDbContext appDbContext)
+        public AccountsController(UserManager<AppUser> userManager, IMapper mapper, IntegraDbContext appDbContext, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _mapper = mapper;
             _appDbContext = appDbContext;
+        }
+
+        // GET api/acoounts
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<AppUser>>> GetAllUsers()
+        {
+            var users = await _userManager.Users
+            .FromSql(
+                "SELECT a.* FROM AspNetUsers a LEFT JOIN AspNetUserRoles b ON(a.Id=b.UserId) "+
+                "LEFT JOIN AspNetRoles c ON(c.Id=b.RoleId) WHERE c.Name = 'Employee'"
+            ).Select(
+                u => new AppUser() {
+                    Id = u.Id,
+                    UserName = u.UserName,
+                    Email = u.Email
+                }
+            )
+            .ToListAsync();
+                
+            return users;
         }
 
         // POST api/accounts

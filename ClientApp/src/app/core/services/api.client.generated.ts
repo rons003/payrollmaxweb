@@ -25,6 +25,61 @@ export class Service {
     }
 
     /**
+     * @return Success
+     */
+    getAllUsers(): Observable<AppUser[]> {
+        let url_ = this.baseUrl + "/api/Accounts";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllUsers(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllUsers(<any>response_);
+                } catch (e) {
+                    return <Observable<AppUser[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AppUser[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllUsers(response: HttpResponseBase): Observable<AppUser[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(AppUser.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AppUser[]>(<any>null);
+    }
+
+    /**
      * @param model (optional) 
      * @return Success
      */
@@ -358,6 +413,98 @@ export class Service {
         }
         return _observableOf<VwsPayrollHeader[]>(<any>null);
     }
+}
+
+export class AppUser implements IAppUser {
+    id?: string | undefined;
+    userName?: string | undefined;
+    normalizedUserName?: string | undefined;
+    email?: string | undefined;
+    normalizedEmail?: string | undefined;
+    emailConfirmed?: boolean | undefined;
+    passwordHash?: string | undefined;
+    securityStamp?: string | undefined;
+    concurrencyStamp?: string | undefined;
+    phoneNumber?: string | undefined;
+    phoneNumberConfirmed?: boolean | undefined;
+    twoFactorEnabled?: boolean | undefined;
+    lockoutEnd?: Date | undefined;
+    lockoutEnabled?: boolean | undefined;
+    accessFailedCount?: number | undefined;
+
+    constructor(data?: IAppUser) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.userName = data["userName"];
+            this.normalizedUserName = data["normalizedUserName"];
+            this.email = data["email"];
+            this.normalizedEmail = data["normalizedEmail"];
+            this.emailConfirmed = data["emailConfirmed"];
+            this.passwordHash = data["passwordHash"];
+            this.securityStamp = data["securityStamp"];
+            this.concurrencyStamp = data["concurrencyStamp"];
+            this.phoneNumber = data["phoneNumber"];
+            this.phoneNumberConfirmed = data["phoneNumberConfirmed"];
+            this.twoFactorEnabled = data["twoFactorEnabled"];
+            this.lockoutEnd = data["lockoutEnd"] ? new Date(data["lockoutEnd"].toString()) : <any>undefined;
+            this.lockoutEnabled = data["lockoutEnabled"];
+            this.accessFailedCount = data["accessFailedCount"];
+        }
+    }
+
+    static fromJS(data: any): AppUser {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppUser();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userName"] = this.userName;
+        data["normalizedUserName"] = this.normalizedUserName;
+        data["email"] = this.email;
+        data["normalizedEmail"] = this.normalizedEmail;
+        data["emailConfirmed"] = this.emailConfirmed;
+        data["passwordHash"] = this.passwordHash;
+        data["securityStamp"] = this.securityStamp;
+        data["concurrencyStamp"] = this.concurrencyStamp;
+        data["phoneNumber"] = this.phoneNumber;
+        data["phoneNumberConfirmed"] = this.phoneNumberConfirmed;
+        data["twoFactorEnabled"] = this.twoFactorEnabled;
+        data["lockoutEnd"] = this.lockoutEnd ? this.lockoutEnd.toISOString() : <any>undefined;
+        data["lockoutEnabled"] = this.lockoutEnabled;
+        data["accessFailedCount"] = this.accessFailedCount;
+        return data; 
+    }
+}
+
+export interface IAppUser {
+    id?: string | undefined;
+    userName?: string | undefined;
+    normalizedUserName?: string | undefined;
+    email?: string | undefined;
+    normalizedEmail?: string | undefined;
+    emailConfirmed?: boolean | undefined;
+    passwordHash?: string | undefined;
+    securityStamp?: string | undefined;
+    concurrencyStamp?: string | undefined;
+    phoneNumber?: string | undefined;
+    phoneNumberConfirmed?: boolean | undefined;
+    twoFactorEnabled?: boolean | undefined;
+    lockoutEnd?: Date | undefined;
+    lockoutEnabled?: boolean | undefined;
+    accessFailedCount?: number | undefined;
 }
 
 export class RegistrationViewModel implements IRegistrationViewModel {

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
+
 namespace payroll.Models
 {
     public class IntegraDbContext : IdentityDbContext<AppUser>

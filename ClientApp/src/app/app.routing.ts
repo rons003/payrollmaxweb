@@ -102,6 +102,10 @@ export const routes: Routes = [
       {
         path: 'changepassword',
         loadChildren: './views/changepassword/changepassword.module#ChangepasswordModule'
+      },
+      {
+        path: 'accounts',
+        loadChildren: './views/accounts/accounts.module#AccountsModule'
       }
     ]
   }
