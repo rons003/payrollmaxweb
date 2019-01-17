@@ -18,11 +18,24 @@ export class AccountsComponent implements OnInit {
 
   getAllAccounts() {
     this.apiService.getAllUsers()
-    .subscribe(
-      response => {
-        this.accounts = response;
-      }
-    );
+      .subscribe(
+        response => {
+          this.accounts = response;
+        }
+      );
+  }
+
+  searchAccount(empno: string) {
+    this.apiService.getAccount(empno)
+      .subscribe(
+        response => {
+          this.accounts = [];
+          if (response.email) {
+            this.accounts.push(response);
+          }
+
+        }
+      );
   }
 
 }

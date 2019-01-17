@@ -5,5 +5,8 @@ namespace payroll.Models
     public class AppUser : IdentityUser
     {
         // Extended Properties
+        public string QuestionOne { get; set; }
+        public string QuestionTwo { get; set; }
+        public string QuestionThree { get; set; }
     }
 }

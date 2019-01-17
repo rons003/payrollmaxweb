@@ -34,11 +34,14 @@ export class RegisterComponent implements OnInit {
     }
     this.formreg = this.formBuilder.group({
       username: [null, [Validators.required, Validators.pattern('[0-9 ]*')]],
-      middleinitial: [null, [Validators.required, Validators.maxLength(1), Validators.pattern('[a-zA-Z ]*')]],
+      lastname: [null, [Validators.required]],
       birthday: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
       password: [null, Validators.required],
       confirmpassword: [null, Validators.required],
+      questionOne: [null, Validators.required],
+      questionTwo: [null, Validators.required],
+      questionThree: [null, Validators.required]
     }, {
         validator: ConfirmPasswordValidator.MatchPassword
       }
@@ -53,10 +56,14 @@ export class RegisterComponent implements OnInit {
     const birthday = year + '-' + month + '-' + day;
     const registration = new RegistrationViewModel();
     registration.userName = this.formreg.controls.username.value;
-    registration.middleInitial = this.formreg.controls.middleinitial.value;
+    registration.lastName = this.formreg.controls.lastname.value;
     registration.birthday = birthday;
     registration.email = this.formreg.controls.email.value;
     registration.password = this.formreg.controls.password.value;
+    registration.questionOne = this.formreg.controls.questionOne.value;
+    registration.questionTwo = this.formreg.controls.questionTwo.value;
+    registration.questionThree = this.formreg.controls.questionThree.value;
+
     this.apiService.register(registration)
       .subscribe(
         response => {

@@ -136,6 +136,60 @@ export class Service {
     }
 
     /**
+     * @return Success
+     */
+    getAccount(id: string): Observable<AppUser> {
+        let url_ = this.baseUrl + "/api/Accounts/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAccount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAccount(<any>response_);
+                } catch (e) {
+                    return <Observable<AppUser>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AppUser>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAccount(response: HttpResponseBase): Observable<AppUser> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? AppUser.fromJS(resultData200) : new AppUser();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AppUser>(<any>null);
+    }
+
+    /**
      * @param credentials (optional) 
      * @return Success
      */
@@ -416,6 +470,9 @@ export class Service {
 }
 
 export class AppUser implements IAppUser {
+    questionOne?: string | undefined;
+    questionTwo?: string | undefined;
+    questionThree?: string | undefined;
     id?: string | undefined;
     userName?: string | undefined;
     normalizedUserName?: string | undefined;
@@ -443,6 +500,9 @@ export class AppUser implements IAppUser {
 
     init(data?: any) {
         if (data) {
+            this.questionOne = data["questionOne"];
+            this.questionTwo = data["questionTwo"];
+            this.questionThree = data["questionThree"];
             this.id = data["id"];
             this.userName = data["userName"];
             this.normalizedUserName = data["normalizedUserName"];
@@ -470,6 +530,9 @@ export class AppUser implements IAppUser {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["questionOne"] = this.questionOne;
+        data["questionTwo"] = this.questionTwo;
+        data["questionThree"] = this.questionThree;
         data["id"] = this.id;
         data["userName"] = this.userName;
         data["normalizedUserName"] = this.normalizedUserName;
@@ -490,6 +553,9 @@ export class AppUser implements IAppUser {
 }
 
 export interface IAppUser {
+    questionOne?: string | undefined;
+    questionTwo?: string | undefined;
+    questionThree?: string | undefined;
     id?: string | undefined;
     userName?: string | undefined;
     normalizedUserName?: string | undefined;
@@ -510,9 +576,12 @@ export interface IAppUser {
 export class RegistrationViewModel implements IRegistrationViewModel {
     userName?: string | undefined;
     birthday?: string | undefined;
-    middleInitial?: string | undefined;
+    lastName?: string | undefined;
     email?: string | undefined;
     password?: string | undefined;
+    questionOne?: string | undefined;
+    questionTwo?: string | undefined;
+    questionThree?: string | undefined;
 
     constructor(data?: IRegistrationViewModel) {
         if (data) {
@@ -527,9 +596,12 @@ export class RegistrationViewModel implements IRegistrationViewModel {
         if (data) {
             this.userName = data["userName"];
             this.birthday = data["birthday"];
-            this.middleInitial = data["middleInitial"];
+            this.lastName = data["lastName"];
             this.email = data["email"];
             this.password = data["password"];
+            this.questionOne = data["questionOne"];
+            this.questionTwo = data["questionTwo"];
+            this.questionThree = data["questionThree"];
         }
     }
 
@@ -544,9 +616,12 @@ export class RegistrationViewModel implements IRegistrationViewModel {
         data = typeof data === 'object' ? data : {};
         data["userName"] = this.userName;
         data["birthday"] = this.birthday;
-        data["middleInitial"] = this.middleInitial;
+        data["lastName"] = this.lastName;
         data["email"] = this.email;
         data["password"] = this.password;
+        data["questionOne"] = this.questionOne;
+        data["questionTwo"] = this.questionTwo;
+        data["questionThree"] = this.questionThree;
         return data; 
     }
 }
@@ -554,9 +629,12 @@ export class RegistrationViewModel implements IRegistrationViewModel {
 export interface IRegistrationViewModel {
     userName?: string | undefined;
     birthday?: string | undefined;
-    middleInitial?: string | undefined;
+    lastName?: string | undefined;
     email?: string | undefined;
     password?: string | undefined;
+    questionOne?: string | undefined;
+    questionTwo?: string | undefined;
+    questionThree?: string | undefined;
 }
 
 export class ResultReponser implements IResultReponser {

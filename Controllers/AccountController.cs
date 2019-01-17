@@ -48,6 +48,33 @@ namespace payroll.Controllers
             return users;
         }
 
+        // GET: api/Account/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AppUser>> GetAccount(string id)
+        {
+            var user = await _userManager.Users
+                .Where(u => u.UserName == id)
+                .Select(
+                    u => new AppUser() {
+                    Id = u.Id,
+                    UserName = u.UserName,
+                    Email = u.Email
+                }
+                ).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return Ok(
+                    new
+                    {
+                        result = "success",
+                        message = "Account Not Found!"
+                    });
+            }
+
+            return user;
+        }
+
         // POST api/accounts
         [HttpPost]
         public async Task<ActionResult<ResultReponser>> Register([FromBody]RegistrationViewModel model)
@@ -59,7 +86,7 @@ namespace payroll.Controllers
 
             var employeeValidate = _appDbContext.VwsEmployees
                 .Where(e => e.EmployeeNo == model.UserName)
-                .Where(e => e.MiddleInitial == model.MiddleInitial + '.')
+                .Where(e => e.LastName == model.LastName.ToUpper())
                 .Where(e => e.Birthday == DateTime.Parse(model.Birthday))
                 .FirstOrDefault();
 
