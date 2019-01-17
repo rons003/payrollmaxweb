@@ -33,7 +33,7 @@
                       <button type="submit" class="btn btn-primary px-4">Login</button>
                     </div>
                     <div class="col-6 text-right">
-                      <button type="button" class="btn btn-link px-0" data-toggle="modal" (click)="primaryModal.show()">Forgot
+                      <button type="button" class="btn btn-link px-0" (click)="open(forgotModal)">Forgot
                         password?</button>
                     </div>
                   </div>
@@ -56,57 +56,60 @@
   </main>
 </div>
 
-<div bsModal #primaryModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-primary modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Forgot Password</h4>
-        <button type="button" class="close" (click)="primaryModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-info" role="alert">
-          <p class="font-weight-normal"><strong>Note.</strong>
-            If you want to reset your password to default password you need to fill up the correct information
-            about to your details.
-          </p>
+<ng-template #forgotModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Forgot Password</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-info" role="alert">
+      <p class="font-weight-normal"><strong>Note.</strong>
+        If you want to reset your password to default password you need to fill up this.
+      </p>
+    </div>
+    <form [formGroup]="formForgot" (ngSubmit)="forgotPass()">
+      <div class="form-group">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="icon-user"></i></span>
+          </div>
+          <input type="text" id="employeeno" class="form-control" formControlName="employeeNo" placeholder="Employee Number">
         </div>
-        <form [formGroup]="formForgot" (ngSubmit)="forgotPass()">
-          <div class="form-group">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="icon-user"></i></span>
-              </div>
-              <input type="text" id="employeeno" class="form-control" formControlName="employeeNo" placeholder="Employee Number">
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="icon-user"></i></span>
-              </div>
-              <input type="text" id="lastname" class="form-control" formControlName="lastname" placeholder="Surname">
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Birthdate</span>
-              </div>
-              <input class="form-control" placeholder="yyyy-mm-dd" name="birthday" formControlName="birthday"
-                ngbDatepicker #d="ngbDatepicker">
-              <span class="input-group-append">
-                <button class="btn btn-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
-              </span>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary btn-block" [disabled]="!formForgot.valid">
-            Confirm
-          </button>
-        </form>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+      <div class="form-group">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="icon-user"></i></span>
+          </div>
+          <input type="text" id="lastname" class="form-control" formControlName="lastname" placeholder="Surname">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Birthdate</span>
+          </div>
+          <input class="form-control" placeholder="yyyy-mm-dd" name="birthday" formControlName="birthday" ngbDatepicker
+            #d="ngbDatepicker">
+          <span class="input-group-append">
+            <button class="btn btn-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-form-label" for="prependedInput">{{ secretQuestion }}</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-question"></i></span>
+          </div>
+          <input type="text" id="secretquestion" class="form-control" formControlName="secretQuestion" placeholder="Answer">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="!formForgot.valid">
+        Confirm
+      </button>
+    </form>
+  </div>
+</ng-template>

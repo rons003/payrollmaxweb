@@ -8,6 +8,7 @@ import {
   FormBuilder,
   Validators
 } from '@angular/forms';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,10 +22,14 @@ export class LoginComponent implements OnInit {
   alertMessage = '';
   primaryModal;
   formForgot: FormGroup;
+  // Secret Question
+  secretQuestion = '';
+  closeResult: string;
   constructor(
     private apiService: Service,
     private router: Router, private authService: AuthService,
     private formBuilder: FormBuilder,
+    private modalService: NgbModal
   ) {
     this.credentials = new CredentialsViewModel();
   }
@@ -34,13 +39,35 @@ export class LoginComponent implements OnInit {
       employeeNo: [null, [Validators.required, Validators.pattern('[0-9 ]*')]],
       lastname: [null, [Validators.required]],
       birthday: [null, Validators.required],
-      questionOne: [null, Validators.required],
-      questionTwo: [null, Validators.required],
-      questionThree: [null, Validators.required]
+      secretQuestion: [null, Validators.required]
     }
     );
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['']);
+    }
+  }
+
+  open(content) {
+    const secretQuestions = ['questionOne', 'questionTwo', 'questionThree'];
+    const pickQuestion = secretQuestions[Math.floor(Math.random() * secretQuestions.length)];
+    if (pickQuestion === 'questionOne') {
+      this.secretQuestion = 'What was your childhood nickname?';
+    } else if (pickQuestion === 'questionTwo') {
+      this.secretQuestion = 'What is your pets name?';
+    } else if (pickQuestion === 'questionThree') {
+      this.secretQuestion = 'In what year was your mother born?';
+    }
+    console.log(pickQuestion);
+    this.modalService.open(content, { size: 'sm' });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
     }
   }
 
