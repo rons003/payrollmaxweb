@@ -11,9 +11,9 @@
                 <form #formlogin="ngForm" (ngSubmit)="login()">
                   <h1>Login</h1>
                   <p class="text-muted">Sign In to your account</p>
-                  <div class="alert alert-danger" *ngIf="alertValidation">
-                    {{ alertMessage }}
-                  </div>
+                  <div class="alert alert-danger"  role="alert" *ngIf="alertValidationFailed">
+                      {{ alertMessage }}
+                    </div>
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="icon-user"></i></span>
@@ -68,6 +68,12 @@
       <p class="font-weight-normal"><strong>Note.</strong>
         If you want to reset your password to default password you need to fill up this.
       </p>
+    </div>
+    <div class="alert alert-success" role="alert" *ngIf="alertValidationSuccess">
+      {{ alertMessage }}
+    </div>
+    <div class="alert alert-danger" role="alert" *ngIf="alertValidationFailed">
+      {{ alertMessage }}
     </div>
     <form [formGroup]="formForgot" (ngSubmit)="forgotPass()">
       <div class="form-group">

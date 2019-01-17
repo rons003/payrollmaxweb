@@ -302,6 +302,62 @@ export class Service {
     }
 
     /**
+     * @param model (optional) 
+     * @return Success
+     */
+    forgotPassword(model: ForgotPassViewModel | null | undefined): Observable<ResultReponser> {
+        let url_ = this.baseUrl + "/api/ForgotPassword";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(model);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processForgotPassword(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processForgotPassword(<any>response_);
+                } catch (e) {
+                    return <Observable<ResultReponser>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ResultReponser>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processForgotPassword(response: HttpResponseBase): Observable<ResultReponser> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ResultReponser.fromJS(resultData200) : new ResultReponser();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ResultReponser>(<any>null);
+    }
+
+    /**
      * @return Success
      */
     getVwsEmployees(): Observable<VwsEmployee[]> {
@@ -763,6 +819,58 @@ export interface IChangepassViewModel {
     id?: string | undefined;
     oldPassword?: string | undefined;
     newPassword?: string | undefined;
+}
+
+export class ForgotPassViewModel implements IForgotPassViewModel {
+    userName?: string | undefined;
+    lastName?: string | undefined;
+    birthday?: string | undefined;
+    secretQuestion?: number | undefined;
+    secretAnswer?: string | undefined;
+
+    constructor(data?: IForgotPassViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.userName = data["userName"];
+            this.lastName = data["lastName"];
+            this.birthday = data["birthday"];
+            this.secretQuestion = data["secretQuestion"];
+            this.secretAnswer = data["secretAnswer"];
+        }
+    }
+
+    static fromJS(data: any): ForgotPassViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new ForgotPassViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userName"] = this.userName;
+        data["lastName"] = this.lastName;
+        data["birthday"] = this.birthday;
+        data["secretQuestion"] = this.secretQuestion;
+        data["secretAnswer"] = this.secretAnswer;
+        return data; 
+    }
+}
+
+export interface IForgotPassViewModel {
+    userName?: string | undefined;
+    lastName?: string | undefined;
+    birthday?: string | undefined;
+    secretQuestion?: number | undefined;
+    secretAnswer?: string | undefined;
 }
 
 export class VwsEmployee implements IVwsEmployee {

@@ -10,6 +10,7 @@ namespace payroll.ViewModels
         public string UserName { get; set; }
         public string LastName { get; set; }
         public string Birthday { get; set; }
-        public string SecretQuestion { get; set; }
+        public int SecretQuestion { get; set; }
+        public string SecretAnswer { get; set; }
     }
 }

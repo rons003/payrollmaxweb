@@ -36,27 +36,62 @@ namespace payroll.Controllers
                 .FirstOrDefaultAsync();
             if (forgotValidate != null)
             {
-                var user = await _userManager.FindByNameAsync(model.UserName);
-                await _userManager.RemovePasswordAsync(user);
-                var result = await _userManager.AddPasswordAsync(user, "123456");
-                if (result.Succeeded)
+                var secretAnswer = _userManager.Users;
+                switch (model.SecretQuestion)
                 {
-                    return new ResultReponser
+                    case 1:
+                        secretAnswer
+                            .Where(u => u.QuestionOne == model.SecretAnswer)
+                            .FirstOrDefault();
+                        break;
+                    case 2:
+                        secretAnswer
+                            .Where(u => u.QuestionTwo == model.SecretAnswer)
+                            .FirstOrDefault();
+                        break;
+                    case 3:
+                        secretAnswer
+                            .Where(u => u.QuestionThree == model.SecretAnswer)
+                            .FirstOrDefault();
+                        break;
+                    default:
+                        secretAnswer = null;
+                        break;
+                }
+                if (secretAnswer != null)
+                {
+                    var user = await _userManager.FindByNameAsync(model.UserName);
+                    await _userManager.RemovePasswordAsync(user);
+                    var result = await _userManager.AddPasswordAsync(user, "123456");
+                    if (result.Succeeded)
                     {
-                        Result = "success",
-                        Message = "Your password is successfully reset to default password.",
-                        ResponseData = ""
-                    };
+                        return new ResultReponser
+                        {
+                            Result = "success",
+                            Message = "Your password is successfully reset to default password.",
+                            ResponseData = ""
+                        };
+                    }
+                    else
+                    {
+                        return new ResultReponser
+                        {
+                            Result = "failed",
+                            Message = "Something problem",
+                            ResponseData = ""
+                        };
+                    }
                 }
                 else
                 {
                     return new ResultReponser
                     {
                         Result = "failed",
-                        Message = "Something problem",
+                        Message = "Invalid your answer to the Secret Question",
                         ResponseData = ""
                     };
                 }
+
             }
             else
             {
