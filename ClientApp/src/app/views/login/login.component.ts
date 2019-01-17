@@ -47,17 +47,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  open(content) {
-    const secretQuestions = ['questionOne', 'questionTwo', 'questionThree'];
-    const pickQuestion = secretQuestions[Math.floor(Math.random() * secretQuestions.length)];
-    if (pickQuestion === 'questionOne') {
-      this.secretQuestion = 'What was your childhood nickname?';
-    } else if (pickQuestion === 'questionTwo') {
-      this.secretQuestion = 'What is your pets name?';
-    } else if (pickQuestion === 'questionThree') {
-      this.secretQuestion = 'In what year was your mother born?';
-    }
-    console.log(pickQuestion);
+  open(content: any) {
+    console.log(this.randomPicker());
     this.modalService.open(content, { size: 'sm' });
   }
 
@@ -69,6 +60,19 @@ export class LoginComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  randomPicker() {
+    const secretQuestions = ['questionOne', 'questionTwo', 'questionThree'];
+    const pickQuestion = secretQuestions[Math.floor(Math.random() * secretQuestions.length)];
+    if (pickQuestion === 'questionOne') {
+      this.secretQuestion = 'What was your childhood nickname?';
+    } else if (pickQuestion === 'questionTwo') {
+      this.secretQuestion = 'What is your pets name?';
+    } else if (pickQuestion === 'questionThree') {
+      this.secretQuestion = 'In what year was your mother born?';
+    }
+    return pickQuestion;
   }
 
   login() {
