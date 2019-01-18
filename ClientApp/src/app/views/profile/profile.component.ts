@@ -22,7 +22,6 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     const authdata = this.authService.getCurrentUser();
-
     this.formProfile = this.formBuilder.group({
       userType: [{ value: authdata.role[0], disabled: true }],
       empNo: [{ value: authdata.user.employeeNo, disabled: true }],
