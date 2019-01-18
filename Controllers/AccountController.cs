@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace payroll.Controllers
 {
-    [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountsController : Controller
@@ -33,36 +32,40 @@ namespace payroll.Controllers
 
         // GET api/acoounts
         [HttpGet]
+        [Authorize(Policy = "ApiUser")]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetAllUsers()
         {
             var users = await _userManager.Users
             .FromSql(
-                "SELECT a.* FROM AspNetUsers a LEFT JOIN AspNetUserRoles b ON(a.Id=b.UserId) "+
+                "SELECT a.* FROM AspNetUsers a LEFT JOIN AspNetUserRoles b ON(a.Id=b.UserId) " +
                 "LEFT JOIN AspNetRoles c ON(c.Id=b.RoleId) WHERE c.Name = 'Employee'"
             ).Select(
-                u => new AppUser() {
+                u => new AppUser()
+                {
                     Id = u.Id,
                     UserName = u.UserName,
                     Email = u.Email
                 }
             )
             .ToListAsync();
-                
+
             return users;
         }
 
-        // GET: api/Account/5
+        // GET: api/Account/
+        [Authorize(Policy = "ApiUser")]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetAccount(string id)
         {
             var user = await _userManager.Users
                 .Where(u => u.UserName == id)
                 .Select(
-                    u => new AppUser() {
-                    Id = u.Id,
-                    UserName = u.UserName,
-                    Email = u.Email
-                }
+                    u => new AppUser()
+                    {
+                        Id = u.Id,
+                        UserName = u.UserName,
+                        Email = u.Email
+                    }
                 ).FirstOrDefaultAsync();
 
             if (user == null)
