@@ -91,9 +91,9 @@ namespace payroll
             {
                 options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
             });
-
+            services.AddScoped<RoleManager<IdentityRole>>();
             // add identity
-            var builder = services.AddIdentity<AppUser, IdentityRole>(o =>
+            var builder = services.AddIdentityCore<AppUser>(o =>
             {
                 // configure identity options
                 o.Password.RequireDigit = false;

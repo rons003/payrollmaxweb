@@ -9,10 +9,13 @@ using payroll.ViewModels;
 using payroll.Helpers;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace payroll.Controllers
 {
+    [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]")]
+    [ApiController]
     public class AccountsController : Controller
     {
         private readonly IntegraDbContext _appDbContext;

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using payroll.Models;
 using Newtonsoft.Json.Bson;
+using Microsoft.AspNetCore.Authorization;
 
 namespace payroll.Controllers
 {
+    [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]")]
     [ApiController]
     public class ViewPayrollHeaderController : ControllerBase

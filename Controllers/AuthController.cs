@@ -10,11 +10,13 @@ using System.Security.Claims;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace payroll.Controllers
 {
-
+    [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]")]
+    [ApiController]
     public class AuthController : Controller
     {
         private readonly UserManager<AppUser> _userManager;

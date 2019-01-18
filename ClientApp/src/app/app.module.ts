@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -51,6 +51,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // Modal Component
 import { ModalModule } from 'ngx-bootstrap/modal';
 
+// Token Interceptor
+import { TokenInterceptor } from './core/token-interceptor';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -80,7 +83,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     MswnavbarComponent
   ],
   providers: [
-    Service, AuthService
+    Service, AuthService,
+    HttpClientModule,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
