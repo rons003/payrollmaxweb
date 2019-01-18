@@ -14,7 +14,7 @@ export class DefaultLayoutComponent implements OnDestroy {
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement = document.body;
-  constructor(private apiService: Service, private router: Router, private authService: AuthService) {
+  constructor(private apiService: Service, private router: Router, public authService: AuthService) {
     if (this.authService.isActiveUserSuperAdmin()) {
       this.navItems = navItems;
     } else {
