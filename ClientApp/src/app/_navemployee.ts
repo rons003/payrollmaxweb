@@ -22,6 +22,6 @@ export const navItemsEmp = [
     {
         name: 'Loan Balance',
         url: '/loans',
-        icon: 'icon-people'
+        icon: 'fa fa-balance-scale'
     }
 ];
