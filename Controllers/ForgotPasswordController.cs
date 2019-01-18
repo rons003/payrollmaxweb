@@ -36,29 +36,30 @@ namespace payroll.Controllers
                 .FirstOrDefaultAsync();
             if (forgotValidate != null)
             {
-                var secretAnswer = _userManager.Users;
+                AppUser validateSecret = new AppUser();
+                var secretFilter = _userManager.Users;
                 switch (model.SecretQuestion)
                 {
                     case 1:
-                        secretAnswer
+                        validateSecret = secretFilter
                             .Where(u => u.QuestionOne == model.SecretAnswer)
                             .FirstOrDefault();
                         break;
                     case 2:
-                        secretAnswer
+                        validateSecret = secretFilter
                             .Where(u => u.QuestionTwo == model.SecretAnswer)
                             .FirstOrDefault();
                         break;
                     case 3:
-                        secretAnswer
+                        validateSecret = secretFilter
                             .Where(u => u.QuestionThree == model.SecretAnswer)
                             .FirstOrDefault();
                         break;
                     default:
-                        secretAnswer = null;
+                        validateSecret = new AppUser();
                         break;
                 }
-                if (secretAnswer != null)
+                if (validateSecret != null)
                 {
                     var user = await _userManager.FindByNameAsync(model.UserName);
                     await _userManager.RemovePasswordAsync(user);
@@ -87,7 +88,7 @@ namespace payroll.Controllers
                     return new ResultReponser
                     {
                         Result = "failed",
-                        Message = "Invalid your answer to the Secret Question",
+                        Message = "Invalid answer to the secret question.",
                         ResponseData = ""
                     };
                 }

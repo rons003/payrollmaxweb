@@ -1,5 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { navItems } from './../../_nav';
+import { navItemsEmp } from './../../_navemployee';
 import { Service } from '../../core/services/api.client.generated';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/authentication/auth.service';
@@ -9,12 +10,16 @@ import { AuthService } from '../../shared/authentication/auth.service';
   templateUrl: './default-layout.component.html'
 })
 export class DefaultLayoutComponent implements OnDestroy {
-  public navItems = navItems;
+  public navItems;
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement = document.body;
   constructor(private apiService: Service, private router: Router, private authService: AuthService) {
-
+    if (this.authService.isActiveUserSuperAdmin()) {
+      this.navItems = navItems;
+    } else {
+      this.navItems = navItemsEmp;
+    }
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
     });

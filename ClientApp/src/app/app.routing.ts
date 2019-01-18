@@ -106,6 +106,10 @@ export const routes: Routes = [
       {
         path: 'accounts',
         loadChildren: './views/accounts/accounts.module#AccountsModule'
+      },
+      {
+        path: 'loans',
+        loadChildren: './views/loans/loans.module#LoansModule'
       }
     ]
   }
