@@ -882,6 +882,15 @@ export class VwsEmployee implements IVwsEmployee {
     suffixName?: string | undefined;
     employeeName?: string | undefined;
     birthday?: Date | undefined;
+    empPosition?: string | undefined;
+    address01?: string | undefined;
+    telephone01?: string | undefined;
+    dateHired?: Date | undefined;
+    sssNo?: string | undefined;
+    philHealthNo?: string | undefined;
+    pagIbigNo?: string | undefined;
+    taxIDNo?: string | undefined;
+    taxStatus?: string | undefined;
 
     constructor(data?: IVwsEmployee) {
         if (data) {
@@ -902,6 +911,15 @@ export class VwsEmployee implements IVwsEmployee {
             this.suffixName = data["suffixName"];
             this.employeeName = data["employeeName"];
             this.birthday = data["birthday"] ? new Date(data["birthday"].toString()) : <any>undefined;
+            this.empPosition = data["empPosition"];
+            this.address01 = data["address01"];
+            this.telephone01 = data["telephone01"];
+            this.dateHired = data["dateHired"] ? new Date(data["dateHired"].toString()) : <any>undefined;
+            this.sssNo = data["sssNo"];
+            this.philHealthNo = data["philHealthNo"];
+            this.pagIbigNo = data["pagIbigNo"];
+            this.taxIDNo = data["taxIDNo"];
+            this.taxStatus = data["taxStatus"];
         }
     }
 
@@ -922,6 +940,15 @@ export class VwsEmployee implements IVwsEmployee {
         data["suffixName"] = this.suffixName;
         data["employeeName"] = this.employeeName;
         data["birthday"] = this.birthday ? this.birthday.toISOString() : <any>undefined;
+        data["empPosition"] = this.empPosition;
+        data["address01"] = this.address01;
+        data["telephone01"] = this.telephone01;
+        data["dateHired"] = this.dateHired ? this.dateHired.toISOString() : <any>undefined;
+        data["sssNo"] = this.sssNo;
+        data["philHealthNo"] = this.philHealthNo;
+        data["pagIbigNo"] = this.pagIbigNo;
+        data["taxIDNo"] = this.taxIDNo;
+        data["taxStatus"] = this.taxStatus;
         return data; 
     }
 }
@@ -935,6 +962,15 @@ export interface IVwsEmployee {
     suffixName?: string | undefined;
     employeeName?: string | undefined;
     birthday?: Date | undefined;
+    empPosition?: string | undefined;
+    address01?: string | undefined;
+    telephone01?: string | undefined;
+    dateHired?: Date | undefined;
+    sssNo?: string | undefined;
+    philHealthNo?: string | undefined;
+    pagIbigNo?: string | undefined;
+    taxIDNo?: string | undefined;
+    taxStatus?: string | undefined;
 }
 
 export class VwsPayrollHeader implements IVwsPayrollHeader {

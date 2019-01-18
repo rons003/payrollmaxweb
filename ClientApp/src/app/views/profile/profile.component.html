@@ -4,26 +4,79 @@
       <i class="cui-user icons"></i> My Profile
     </div>
     <div class="card-body">
-      <div class="col-md-6">
-        <form [formGroup]="formProfile">
-          <div class="form-group">
-            <label class="col-form-label">User Type</label>
-            <input type="text" class="form-control" formControlName="userType">
-          </div>
-          <div class="form-group">
-            <label class="col-form-label">Employee No.</label>
-            <input type="text" class="form-control" formControlName="empNo">
-          </div>
-          <div class="form-group">
-            <label class="col-form-label">Employee Name</label>
-            <input type="text" class="form-control" formControlName="empName">
-          </div>
-          <div class="form-group">
-            <label class="col-form-label">Birthday</label>
-            <input type="text" class="form-control" formControlName="birthday">
-          </div>
-        </form>
-      </div>
+      <form [formGroup]="formProfile">
+        <tabset>
+          <tab heading="Personal Details">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="col-form-label">User Type</label>
+                  <input type="text" class="form-control" formControlName="userType">
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Employee No.</label>
+                  <input type="text" class="form-control" formControlName="empNo">
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Employee Name</label>
+                  <input type="text" class="form-control" formControlName="empName">
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Position</label>
+                  <input type="text" class="form-control" formControlName="position">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="col-form-label">Birthday</label>
+                  <input type="text" class="form-control" formControlName="birthday">
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Address</label>
+                  <input type="text" class="form-control" formControlName="address1">
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Telephone</label>
+                  <input type="text" class="form-control" formControlName="telephone1">
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Date Hired</label>
+                  <input type="text" class="form-control" formControlName="dateHired">
+                </div>
+              </div>
+            </div>
+          </tab>
+          <tab heading="Government Details">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="col-form-label">SSS No.</label>
+                  <input type="text" class="form-control" formControlName="sssNo">
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Phil Health No.</label>
+                  <input type="text" class="form-control" formControlName="philHealthNo">
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Pag-Ibig No.</label>
+                  <input type="text" class="form-control" formControlName="pagIbigNo">
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Tax ID No.</label>
+                  <input type="text" class="form-control" formControlName="taxIdNo">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="col-form-label">Tax Status</label>
+                  <input type="text" class="form-control" formControlName="taxStatus">
+                </div>
+              </div>
+            </div>
+          </tab>
+        </tabset>
+      </form>
+      <!--/.col-->
     </div>
   </div>
 </div>

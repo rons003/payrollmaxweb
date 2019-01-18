@@ -15,5 +15,14 @@ namespace payroll.Models
         public string SuffixName { get; set; }
         public string EmployeeName { get; set; }
         public DateTime Birthday { get; set; }
+        public string EmpPosition { get; set; }
+        public string Address01 { get; set; }
+        public string Telephone01 { get; set; }
+        public DateTime DateHired { get; set; }
+        public string SSSNo { get; set; }
+        public string PhilHealthNo { get; set; }
+        public string PagIbigNo { get; set; }
+        public string TaxIDNo { get; set; }
+        public string TaxStatus { get; set; }
     }
 }

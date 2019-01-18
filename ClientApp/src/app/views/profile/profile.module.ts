@@ -4,12 +4,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ProfileComponent } from './profile.component';
 import { ProfileRoutingModule } from './profile-routing.module';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
     imports: [
         CommonModule, FormsModule,
         ReactiveFormsModule,
-        ProfileRoutingModule
+        ProfileRoutingModule,
+        TabsModule
     ],
     declarations: [ProfileComponent]
 })
