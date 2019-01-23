@@ -36,7 +36,17 @@ export class AccountsComponent implements OnInit {
           }
         );
     }
+  }
 
+  deleteAccount(userid: string) {
+    this.apiService.deleteAccount(userid)
+      .subscribe(
+        response => {
+          if (response.result === 'success') {
+            this.getAllAccounts();
+          }
+        }
+      );
   }
 
 }

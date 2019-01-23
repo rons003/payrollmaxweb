@@ -364,6 +364,60 @@ export class Service {
     /**
      * @return Success
      */
+    deleteAccount(id: string): Observable<ResultReponser> {
+        let url_ = this.baseUrl + "/api/ForgotPassword/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteAccount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteAccount(<any>response_);
+                } catch (e) {
+                    return <Observable<ResultReponser>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ResultReponser>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteAccount(response: HttpResponseBase): Observable<ResultReponser> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ResultReponser.fromJS(resultData200) : new ResultReponser();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ResultReponser>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getVwsEmployees(): Observable<VwsEmployee[]> {
         let url_ = this.baseUrl + "/api/ViewEmployee";
         url_ = url_.replace(/[?&]$/, "");

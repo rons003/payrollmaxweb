@@ -36,7 +36,10 @@
                 <td>{{ acc.id }}</td>
                 <td>{{ acc.userName }}</td>
                 <td>{{ acc.email }}</td>
-                <td><button class="btn btn-link btn-sm" type="button">Reset Password</button></td>
+                <td>
+                  <button class="btn btn-link btn-sm" type="button">Reset Password</button>
+                  <button class="btn btn-link btn-sm" type="button" (click)="deleteAccount(acc.id)">Delete</button>
+                </td>
               </tr>
             </tbody>
           </table>
