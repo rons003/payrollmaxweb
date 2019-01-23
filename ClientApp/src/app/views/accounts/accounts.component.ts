@@ -26,16 +26,17 @@ export class AccountsComponent implements OnInit {
   }
 
   searchAccount(empno: string) {
-    this.apiService.getAccount(empno)
-      .subscribe(
-        response => {
-          this.accounts = [];
-          if (response.email) {
-            this.accounts.push(response);
+    if (empno === '') {
+      this.getAllAccounts();
+    } else {
+      this.apiService.searchUser(empno)
+        .subscribe(
+          response => {
+            this.accounts = response;
           }
+        );
+    }
 
-        }
-      );
   }
 
 }

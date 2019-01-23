@@ -30,56 +30,77 @@ namespace payroll.Controllers
             _appDbContext = appDbContext;
         }
 
-        // GET api/acoounts
-        [HttpGet]
+        // GET api/accounts
         [Authorize(Policy = "ApiUser")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetAllUsers()
         {
             var users = await _userManager.Users
             .FromSql(
                 "SELECT a.* FROM AspNetUsers a LEFT JOIN AspNetUserRoles b ON(a.Id=b.UserId) " +
                 "LEFT JOIN AspNetRoles c ON(c.Id=b.RoleId) WHERE c.Name = 'Employee'"
-            ).Select(
-                u => new AppUser()
-                {
-                    Id = u.Id,
-                    UserName = u.UserName,
-                    Email = u.Email
-                }
             )
-            .ToListAsync();
-
-            return users;
-        }
-
-        // GET: api/Account/
-        [Authorize(Policy = "ApiUser")]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetAccount(string id)
-        {
-            var user = await _userManager.Users
-                .Where(u => u.UserName == id)
-                .Select(
+            .Select(
                     u => new AppUser()
                     {
                         Id = u.Id,
                         UserName = u.UserName,
                         Email = u.Email
                     }
-                ).FirstOrDefaultAsync();
-
-            if (user == null)
-            {
-                return Ok(
-                    new
-                    {
-                        result = "success",
-                        message = "Account Not Found!"
-                    });
-            }
-
-            return user;
+            ).Take(50).ToListAsync();
+            return users;
         }
+
+        // GET api/accounts/id
+        [Authorize(Policy = "ApiUser")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<AppUser>>> searchUser(string id = "")
+        {
+            var users = await _userManager.Users
+            .FromSql(
+                "SELECT a.* FROM AspNetUsers a LEFT JOIN AspNetUserRoles b ON(a.Id=b.UserId) " +
+                "LEFT JOIN AspNetRoles c ON(c.Id=b.RoleId) WHERE c.Name = 'Employee'"
+            )
+            .Where(u => u.UserName.Contains(id))
+            .Select(
+                    u => new AppUser()
+                    {
+                        Id = u.Id,
+                        UserName = u.UserName,
+                        Email = u.Email
+                    }
+            ).ToListAsync();
+            return users;
+        }
+
+        // GET: api/Account/
+        // [Authorize(Policy = "ApiUser")]
+        // [HttpGet("{id}")]
+        // public async Task<ActionResult<AppUser>> GetAccount(string id)
+        // {
+        //     var user = await _userManager.Users
+        //         .Where(u => u.UserName.Contains(id))
+        //         .Select(
+        //             u => new AppUser()
+        //             {
+        //                 Id = u.Id,
+        //                 UserName = u.UserName,
+        //                 Email = u.Email
+        //             }
+        //         ).FirstOrDefaultAsync();
+
+        //     if (user == null)
+        //     {
+        //         return Ok(
+        //             new
+        //             {
+        //                 result = "success",
+        //                 message = "Account Not Found!"
+        //             });
+        //     }
+
+        //     return user;
+        // }
 
         // POST api/accounts
         [HttpPost]

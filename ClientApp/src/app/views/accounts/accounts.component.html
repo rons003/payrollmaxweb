@@ -12,10 +12,10 @@
                 <label class="col-form-label" for="appendedInputButtons">Employee Number</label>
                 <div class="controls">
                   <div class="input-group">
-                    <input id="appendedInputButtons" class="form-control" type="text" #employeeno>
-                    <span class="input-group-append">
+                    <input id="appendedInputButtons" class="form-control" type="text" (input)="searchAccount($event.target.value)">
+                    <!-- <span class="input-group-append">
                       <button class="btn btn-secondary" type="button" (click)="searchAccount(employeeno.value)">Search</button>
-                    </span>
+                    </span> -->
                   </div>
                 </div>
               </div>

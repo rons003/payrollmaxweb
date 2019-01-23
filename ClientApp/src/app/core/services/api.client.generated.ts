@@ -138,7 +138,7 @@ export class Service {
     /**
      * @return Success
      */
-    getAccount(id: string): Observable<AppUser> {
+    searchUser(id: string): Observable<AppUser[]> {
         let url_ = this.baseUrl + "/api/Accounts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -154,20 +154,20 @@ export class Service {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAccount(response_);
+            return this.processSearchUser(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetAccount(<any>response_);
+                    return this.processSearchUser(<any>response_);
                 } catch (e) {
-                    return <Observable<AppUser>><any>_observableThrow(e);
+                    return <Observable<AppUser[]>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<AppUser>><any>_observableThrow(response_);
+                return <Observable<AppUser[]>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAccount(response: HttpResponseBase): Observable<AppUser> {
+    protected processSearchUser(response: HttpResponseBase): Observable<AppUser[]> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -178,7 +178,11 @@ export class Service {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? AppUser.fromJS(resultData200) : new AppUser();
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(AppUser.fromJS(item));
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -186,7 +190,7 @@ export class Service {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<AppUser>(<any>null);
+        return _observableOf<AppUser[]>(<any>null);
     }
 
     /**

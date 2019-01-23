@@ -60,7 +60,7 @@ import { TokenInterceptor } from './core/token-interceptor';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    AppAsideModule,
+    // AppAsideModule,
     AppBreadcrumbModule.forRoot(),
     AppFooterModule,
     AppHeaderModule,
