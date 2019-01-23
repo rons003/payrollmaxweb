@@ -73,35 +73,6 @@ namespace payroll.Controllers
             return users;
         }
 
-        // GET: api/Account/
-        // [Authorize(Policy = "ApiUser")]
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<AppUser>> GetAccount(string id)
-        // {
-        //     var user = await _userManager.Users
-        //         .Where(u => u.UserName.Contains(id))
-        //         .Select(
-        //             u => new AppUser()
-        //             {
-        //                 Id = u.Id,
-        //                 UserName = u.UserName,
-        //                 Email = u.Email
-        //             }
-        //         ).FirstOrDefaultAsync();
-
-        //     if (user == null)
-        //     {
-        //         return Ok(
-        //             new
-        //             {
-        //                 result = "success",
-        //                 message = "Account Not Found!"
-        //             });
-        //     }
-
-        //     return user;
-        // }
-
         // POST api/accounts
         [HttpPost]
         public async Task<ActionResult<ResultReponser>> Register([FromBody]RegistrationViewModel model)
@@ -180,7 +151,32 @@ namespace payroll.Controllers
                     ResponseData = ""
                 };
             }
+        }
 
+        // Delete api/accounts/id
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ResultReponser>> DeleteAccount(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return new ResultReponser
+                {
+                    Result = "success",
+                    Message = "Account has successfully removed.",
+                    ResponseData = ""
+                };
+            }
+            else
+            {
+                return new ResultReponser
+                {
+                    Result = "failed",
+                    Message = "Something Problem",
+                    ResponseData = ""
+                };
+            }
         }
     }
 }

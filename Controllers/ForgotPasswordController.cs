@@ -108,30 +108,7 @@ namespace payroll.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ResultReponser>> DeleteAccount(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            var result = await _userManager.DeleteAsync(user);
-            if (result.Succeeded)
-            {
-                return new ResultReponser
-                {
-                    Result = "success",
-                    Message = "Account has successfully removed.",
-                    ResponseData = ""
-                };
-            }
-            else
-            {
-                return new ResultReponser
-                {
-                    Result = "failed",
-                    Message = "Something Problem",
-                    ResponseData = ""
-                };
-            }
-        }
+        
 
         // PUT: api/Employee/5
         // [HttpPut("{id}")]
@@ -161,22 +138,6 @@ namespace payroll.Controllers
         //     }
 
         //     return NoContent();
-        // }
-
-        // DELETE: api/Employee/5
-        // [HttpDelete("{id}")]
-        // public async Task<ActionResult<Employee>> DeleteEmployee(int id)
-        // {
-        //     var employee = await _context.Employee.FindAsync(id);
-        //     if (employee == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     _context.Employee.Remove(employee);
-        //     await _context.SaveChangesAsync();
-
-        //     return employee;
         // }
     }
 }
